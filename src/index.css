@@ -1,0 +1,26 @@
+body,
+p,
+ul,
+h1 {
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+body {
+  background: #21212d;
+  font-weight: 400;
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+}
