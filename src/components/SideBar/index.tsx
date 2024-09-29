@@ -1,33 +1,15 @@
-import { generateUUID } from '@/helpers'
 import * as S from './styles'
 import logo from '@/assets/logo.svg'
 import { Text } from '../Text'
 import { SidebarLink } from './components/SidebarLink'
-import { useMemo, useState } from 'react'
 import { colors } from '@/styles/colors'
-import { useSidebarStore } from '@/store/sidebar.store'
+import { useSideBar } from './hooks/use-side-bar'
+import { boardService } from '@/services/board/board-service'
 
 export const SideBar = () => {
-  const { open } = useSidebarStore()
-  const [activeIndex, setActiveIndex] = useState(0)
-
-  const links = useMemo(
-    () => [
-      {
-        id: generateUUID(),
-        title: 'Plataforma',
-      },
-      {
-        id: generateUUID(),
-        title: 'Marketing',
-      },
-      {
-        id: generateUUID(),
-        title: 'RoadMap',
-      },
-    ],
-    []
-  )
+  const { boards, onChangeActiveBoard, activeBoardId, open } = useSideBar({
+    boardService,
+  })
 
   return (
     <S.Wrapper $open={open}>
@@ -43,15 +25,15 @@ export const SideBar = () => {
         size={13}
         color={colors.c2}
       >
-        TODOS QUADROS ({links.length})
+        TODOS QUADROS ({boards.length})
       </Text>
 
       <ul>
-        {links.map((link, index) => (
-          <li key={link.id} onClick={() => setActiveIndex(index)}>
+        {boards.map((board) => (
+          <li key={board.id} onClick={onChangeActiveBoard(board.id)}>
             <SidebarLink
-              isActive={open && activeIndex === index}
-              title={link.title}
+              isActive={open && activeBoardId === board.id}
+              title={board.name}
             />
           </li>
         ))}

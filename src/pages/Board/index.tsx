@@ -140,7 +140,7 @@ export const Board: FC = () => {
         {data.map((row) => (
           <div key={row.id}>
             <S.StatusContainer>
-              <S.StatusIndicator bgColor={row.status.color} />
+              <S.StatusIndicator $bgColor={row.status.color} />
               <Text size={14} color={colors.c2} weight={500} letterSpacing={1}>
                 {row.status.title} ({row.tasks.length})
               </Text>
