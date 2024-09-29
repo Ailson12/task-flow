@@ -1,4 +1,4 @@
-import { generateUUID } from '@/helpers/uuid.helper'
+import { generateUUID } from '@/helpers'
 import * as S from './styles'
 import logo from '@/assets/logo.svg'
 import { Text } from '../Text'
