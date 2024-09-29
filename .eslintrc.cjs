@@ -13,8 +13,12 @@ module.exports = {
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh', 'import'],
+  plugins: ['prettier', 'react-refresh', 'import'],
   rules: {
+    "no-var": "error",                // Proíbe o uso de var
+    "curly": "error",                 // Exige chaves para todos os blocos de controle
+    "prefer-const": "error",          // Sugere usar const quando a variável não é reatribuída
+    "prettier/prettier": "error",     // Faz com que erros do Prettier sejam tratados como erros do ESLint
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
