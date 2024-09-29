@@ -1,23 +1,8 @@
 import { useSideBar } from './use-side-bar'
 import { describe, expect, it } from 'vitest'
-import { BoardService } from '@/services/board/board'
 import { renderHook, waitFor } from '@testing-library/react'
+import { boardServiceMock } from '@/mocks/board-service-mock'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-
-const boardServiceMock: BoardService = {
-  findAll() {
-    return Promise.resolve([
-      {
-        id: 'ab123',
-        name: 'Marketing',
-      },
-      {
-        id: 'yu931',
-        name: 'RoadMap',
-      },
-    ])
-  },
-}
 
 const setupHook = () => {
   const queryClient = new QueryClient()
