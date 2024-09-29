@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Text } from '../Text'
-import { Container } from './styles'
+import * as S from './styles'
 import MenuIcon from '@/assets/menu.svg?react'
 import { useSidebarStore } from '@/store/sidebar.store'
 
@@ -8,7 +8,7 @@ export const NavBar: FC = () => {
   const { toggleOpen } = useSidebarStore()
 
   return (
-    <Container>
+    <S.Container>
       <MenuIcon
         onClick={toggleOpen}
         cursor={'pointer'}
@@ -18,6 +18,6 @@ export const NavBar: FC = () => {
       <Text size={24} weight={500}>
         Plataforma
       </Text>
-    </Container>
+    </S.Container>
   )
 }

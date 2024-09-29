@@ -1,35 +1,19 @@
-import styled from 'styled-components'
 import { NavBar } from './components/NavBar'
 import { SideBar } from './components/SideBar'
 import { Board } from './pages/Board'
+import * as S from './app.styles'
 
 export const App = () => {
   return (
-    <GridContainer>
+    <S.GridContainer>
       <SideBar />
 
-      <ColumnContent>
+      <S.ColumnContent>
         <NavBar />
-        <Content>
+        <S.Content>
           <Board />
-        </Content>
-      </ColumnContent>
-    </GridContainer>
+        </S.Content>
+      </S.ColumnContent>
+    </S.GridContainer>
   )
 }
-
-const GridContainer = styled.div({
-  minHeight: '100vh',
-  display: 'flex',
-})
-
-const ColumnContent = styled.div({
-  display: 'flex',
-  flex: 1,
-  flexDirection: 'column',
-})
-
-const Content = styled.div({
-  padding: '1.5rem',
-  flex: 1,
-})

@@ -1,15 +1,8 @@
 import { Text } from '@/components/Text'
 import { colors } from '@/styles/colors'
 import { FC, useMemo } from 'react'
-import {
-  Card,
-  Container,
-  StatusContainer,
-  StatusIndicator,
-  TaskContainer,
-  Wrapper,
-} from './styles'
-import { generateUUID } from '@/helpers/uuid.helper'
+import * as S from './styles'
+import { generateUUID } from '@/helpers'
 
 export const Board: FC = () => {
   const data = useMemo(
@@ -142,29 +135,29 @@ export const Board: FC = () => {
   )
 
   return (
-    <Wrapper>
-      <Container>
+    <S.Wrapper>
+      <S.Container>
         {data.map((row) => (
           <div key={row.id}>
-            <StatusContainer>
-              <StatusIndicator bgColor={row.status.color} />
+            <S.StatusContainer>
+              <S.StatusIndicator bgColor={row.status.color} />
               <Text size={14} color={colors.c2} weight={500} letterSpacing={1}>
                 {row.status.title} ({row.tasks.length})
               </Text>
-            </StatusContainer>
+            </S.StatusContainer>
 
-            <TaskContainer>
+            <S.TaskContainer>
               {row.tasks.map((task) => (
-                <Card key={task.title}>
+                <S.Card key={task.title}>
                   <Text weight={500} size={14}>
                     {task.title}
                   </Text>
-                </Card>
+                </S.Card>
               ))}
-            </TaskContainer>
+            </S.TaskContainer>
           </div>
         ))}
-      </Container>
-    </Wrapper>
+      </S.Container>
+    </S.Wrapper>
   )
 }

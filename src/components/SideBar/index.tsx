@@ -1,8 +1,8 @@
 import { generateUUID } from '@/helpers/uuid.helper'
-import { SideBarHeader, Wrapper } from './styles'
+import * as S from './styles'
 import logo from '@/assets/logo.svg'
 import { Text } from '../Text'
-import { SidebarLink } from './SidebarLink'
+import { SidebarLink } from './components/SidebarLink'
 import { useMemo, useState } from 'react'
 import { colors } from '@/styles/colors'
 import { useSidebarStore } from '@/store/sidebar.store'
@@ -30,11 +30,11 @@ export const SideBar = () => {
   )
 
   return (
-    <Wrapper $open={open}>
-      <SideBarHeader>
+    <S.Wrapper $open={open}>
+      <S.SideBarHeader>
         <img src={logo} alt="logo" width={44} height={44} />
         {open && <h1>TaskFlow</h1>}
-      </SideBarHeader>
+      </S.SideBarHeader>
 
       <Text
         marginBottom={'1rem'}
@@ -59,6 +59,6 @@ export const SideBar = () => {
           <SidebarLink color={colors.c1} title={'+ Criar novo quadro'} />
         </li>
       </ul>
-    </Wrapper>
+    </S.Wrapper>
   )
 }

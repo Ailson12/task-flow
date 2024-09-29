@@ -1,7 +1,7 @@
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 import BoardIcon from '@/assets/board-icon.svg?react'
 import { Text } from '@/components/Text'
-import { Container } from './styles'
+import * as S from './styles'
 import { colors } from '@/styles/colors'
 
 type Props = {
@@ -11,15 +11,17 @@ type Props = {
 }
 
 export const SidebarLink: FC<Props> = ({ title, color, isActive = false }) => {
-  const currentColor = color ?? (isActive ? colors.c4 : colors.c2)
+  const currentColor = useMemo(() => {
+    return color ?? (isActive ? colors.c4 : colors.c2)
+  }, [color, isActive])
 
   return (
-    <Container $isActive={isActive}>
+    <S.Container $isActive={isActive}>
       <BoardIcon height={22} width={22} fill={currentColor} />
 
       <Text color={currentColor} weight={500}>
         {title}
       </Text>
-    </Container>
+    </S.Container>
   )
 }

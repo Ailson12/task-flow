@@ -11,9 +11,8 @@ export const useSidebarStore = create(
     (set, get) => ({
       open: true,
       toggleOpen() {
-        set({
-          open: !get().open,
-        })
+        const { open } = get()
+        set({ open: !open })
       },
     }),
     {
