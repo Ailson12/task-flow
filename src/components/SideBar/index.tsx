@@ -7,7 +7,7 @@ import { useSideBar } from './hooks/use-side-bar'
 import { boardService } from '@/services/board/board-service'
 
 export const SideBar = () => {
-  const { boards, onChangeActiveBoard, activeBoardId, open } = useSideBar({
+  const { board, onChangeActiveBoard, activeBoardId, open } = useSideBar({
     boardService,
   })
 
@@ -25,11 +25,11 @@ export const SideBar = () => {
         size={13}
         color={colors.c2}
       >
-        TODOS QUADROS ({boards.length})
+        TODOS QUADROS ({board.items.length})
       </Text>
 
       <ul>
-        {boards.map((board) => (
+        {board.items.map((board) => (
           <li key={board.id} onClick={onChangeActiveBoard(board.id)}>
             <SidebarLink
               isActive={open && activeBoardId === board.id}
