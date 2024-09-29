@@ -29,15 +29,15 @@ export const StatusContainer = styled.div({
 })
 
 export const StatusIndicator = styled.div<{
-  bgColor?: string
+  $bgColor?: string
 }>(
   {
     height: 12,
     width: 12,
     borderRadius: '50%',
   },
-  ({ bgColor }) => ({
-    background: bgColor,
+  ({ $bgColor }) => ({
+    background: $bgColor,
   })
 )
 
