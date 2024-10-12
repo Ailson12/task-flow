@@ -36,8 +36,10 @@ describe('useSideBar', () => {
     const { result } = setupHook()
 
     const callback = result.current.onChangeActiveBoard('yu931')
-    await waitFor(callback)
+    callback()
 
-    expect(result.current.activeBoardId).toEqual('yu931')
+    await waitFor(() => {
+      expect(result.current.activeBoardId).toEqual('yu931')
+    })
   })
 })

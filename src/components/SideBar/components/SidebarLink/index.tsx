@@ -12,7 +12,11 @@ type Props = {
 
 export const SidebarLink: FC<Props> = ({ title, color, isActive = false }) => {
   const currentColor = useMemo(() => {
-    return color ?? (isActive ? colors.c4 : colors.c2)
+    if (color) {
+      return color
+    }
+
+    return isActive ? colors.c4 : colors.c2
   }, [color, isActive])
 
   return (
