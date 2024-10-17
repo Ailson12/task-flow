@@ -12,7 +12,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     testTimeout: 8000,
-    setupFiles: 'src/configs/setupTests',
+    setupFiles: 'src/configs/test/setupTests.ts',
     coverage: {
       exclude: [...coverageConfigDefaults.exclude, 'src/router/index.tsx'],
     },

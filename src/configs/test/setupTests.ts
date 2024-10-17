@@ -1,5 +1,5 @@
 import { beforeAll, afterEach, afterAll } from 'vitest'
-import { server } from '@/mocks/node'
+import { server } from '@/configs/test/node'
 
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())

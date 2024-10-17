@@ -1,18 +1,27 @@
-import { Board, BoardService } from '@/services/board/board'
+import { Board } from '@/types/board'
+import { http, HttpResponse } from 'msw'
 
-export const boardServiceMock: BoardService = {
-  findAll() {
-    const boards: Board[] = [
-      {
-        id: 'ab123',
-        name: 'Marketing',
-      },
-      {
-        id: 'yu931',
-        name: 'RoadMap',
-      },
-    ]
-
-    return Promise.resolve(boards)
+const requests = [
+  {
+    url: `${import.meta.env.VITE_API_URL}board`,
+    method: 'findAll',
+    data: () => {
+      return [
+        {
+          id: 'ab123',
+          title: 'Marketing',
+        },
+        {
+          id: 'yu931',
+          title: 'RoadMap',
+        },
+      ] satisfies Board[]
+    },
   },
-}
+]
+
+export const boardServiceMock = requests.map((request) => {
+  return http.get(request.url, () => {
+    return HttpResponse.json(request.data())
+  })
+})

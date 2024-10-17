@@ -7,20 +7,30 @@ export const useSideBar = () => {
   const { open } = useSidebarStore()
   const [activeBoardId, setActiveBoardId] = useState('')
 
-  const { data, isFetching, isLoading } = useQuery({
+  const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['list-boards'],
     queryFn: boardService.findAll,
   })
 
+  const idIsIncludedInBoards = (id: string) => {
+    const ids = data?.map((board) => board.id)
+    return (ids ?? []).includes(id)
+  }
+
   const onChangeActiveBoard = (id: string) => () => {
-    setActiveBoardId(id)
+    const isIncluded = idIsIncludedInBoards(id)
+    if (isIncluded) {
+      setActiveBoardId(id)
+    } else {
+      console.error(`id ${id} is not included in the list of boards`)
+    }
   }
 
   return {
     open,
     board: {
       isLoading,
-      isFetching,
+      isSuccess,
       items: data ?? [],
     },
     activeBoardId,
