@@ -8,9 +8,10 @@ type Props = {
   color?: string
   title: string
   isActive?: boolean
+  onClick?: () => void
 }
 
-export const SidebarLink: FC<Props> = ({ title, color, isActive = false }) => {
+export const SidebarLink: FC<Props> = ({ title, color, onClick, isActive = false }) => {
   const currentColor = useMemo(() => {
     if (color) {
       return color
@@ -20,7 +21,7 @@ export const SidebarLink: FC<Props> = ({ title, color, isActive = false }) => {
   }, [color, isActive])
 
   return (
-    <S.Container $isActive={isActive}>
+    <S.Container $isActive={isActive} onClick={onClick}>
       <BoardIcon height={22} width={22} fill={currentColor} />
 
       <Text color={currentColor} weight={500}>

@@ -1,15 +1,12 @@
 import * as S from './styles'
 import logo from '@/assets/logo.svg'
 import { Text } from '../Text'
-import { SidebarLink } from './components/SidebarLink'
 import { colors } from '@/styles/colors'
 import { useSideBar } from './hooks/use-side-bar'
-import { boardService } from '@/services/board/board-service'
+import { SidebarLink } from './components/SidebarLink'
 
 export const SideBar = () => {
-  const { board, onChangeActiveBoard, activeBoardId, open } = useSideBar({
-    boardService,
-  })
+  const { board, onChangeActiveBoard, activeBoardId, open } = useSideBar()
 
   return (
     <S.Wrapper $open={open}>
@@ -30,10 +27,11 @@ export const SideBar = () => {
 
       <ul>
         {board.items.map((board) => (
-          <li key={board.id} onClick={onChangeActiveBoard(board.id)}>
+          <li key={board.id}>
             <SidebarLink
-              isActive={open && activeBoardId === board.id}
               title={board.name}
+              onClick={onChangeActiveBoard(board.id)}
+              isActive={open && activeBoardId === board.id}
             />
           </li>
         ))}
