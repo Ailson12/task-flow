@@ -1,11 +1,11 @@
-import { httpClient } from '../api'
-import { Board, BoardService } from './board'
+import { Board } from '@/types/board'
+import { httpClient } from '@/config/api'
 
 const findAll = async () => {
   const response = await httpClient.get<Board[]>('board')
   return response.data
 }
 
-export const boardService: BoardService = {
+export const boardService = {
   findAll,
 }
