@@ -4,14 +4,19 @@ import { Text } from '@/components/Text'
 import * as S from './styles'
 import { colors } from '@/styles/colors'
 
-type Props = {
+export type SidebarLinkProps = {
   color?: string
   title: string
   isActive?: boolean
   onClick?: () => void
 }
 
-export const SidebarLink: FC<Props> = ({ title, color, onClick, isActive = false }) => {
+export const SidebarLink: FC<SidebarLinkProps> = ({
+  title,
+  color,
+  onClick,
+  isActive = false,
+}) => {
   const currentColor = useMemo(() => {
     if (color) {
       return color
