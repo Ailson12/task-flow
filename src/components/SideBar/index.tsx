@@ -29,7 +29,7 @@ export const SideBar = () => {
         {board.items.map((board) => (
           <li key={board.id}>
             <SidebarLink
-              title={board.name}
+              title={board.title}
               onClick={onChangeActiveBoard(board.id)}
               isActive={open && activeBoardId === board.id}
             />
