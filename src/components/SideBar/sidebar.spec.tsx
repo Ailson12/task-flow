@@ -61,4 +61,14 @@ describe('<Sidebar/>', () => {
       expect(names).toEqual(expect.arrayContaining(['RoadMap', 'Marketing']))
     })
   })
+
+  it('should display the option to register a board', () => {
+    setupRender()
+
+    const actionNewBoard = screen.queryByText('criar novo quadro', {
+      exact: false,
+    })
+
+    expect(actionNewBoard).toBeTruthy()
+  })
 })
