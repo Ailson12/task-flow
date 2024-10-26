@@ -9,7 +9,10 @@ export const CreateNewBoard: FC = () => {
     <div>
       <button onClick={() => setOpen(!open)}>LIGAR/DESLIGAR</button>
       <Dialog.Root open={open}>
-        <Dialog.Header title="Adicionar nova Atividade" />
+        <Dialog.Header
+          title="Adicionar nova Atividade"
+          onClose={() => setOpen(false)}
+        />
 
         <Text>Inputs</Text>
       </Dialog.Root>

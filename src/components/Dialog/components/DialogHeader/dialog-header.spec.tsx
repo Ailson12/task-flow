@@ -53,6 +53,7 @@ describe('<DialogHeader />', () => {
     expect(consoleErrorSpy).toHaveBeenCalledWith(
       'property title and children cannot be entered together'
     )
+    consoleErrorSpy.mockClear()
   })
 
   it('should execute the callback when you click to close', () => {
@@ -60,7 +61,6 @@ describe('<DialogHeader />', () => {
 
     setupRender({
       title: 'Title custom x',
-      children: <p data-testid="title-custom">Title custom</p>,
       onClose: handleClick,
     })
 

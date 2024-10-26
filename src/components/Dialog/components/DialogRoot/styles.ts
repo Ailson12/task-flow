@@ -15,7 +15,7 @@ export const DialogWrapper = styled.dialog({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    background: 'rgba(0, 0, 0, 0.14)',
+    background: 'rgba(0, 0, 0, 0.20)',
   },
 })
 
