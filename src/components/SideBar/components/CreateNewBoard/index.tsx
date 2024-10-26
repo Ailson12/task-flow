@@ -1,9 +1,9 @@
 import { Dialog } from '@/components/Dialog'
-import { Text } from '@/components/Text'
+import { Input } from '@/components/Input'
 import { FC, useState } from 'react'
 
 export const CreateNewBoard: FC = () => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
 
   return (
     <div>
@@ -14,7 +14,7 @@ export const CreateNewBoard: FC = () => {
           onClose={() => setOpen(false)}
         />
 
-        <Text>Inputs</Text>
+        <Input label="Título" />
       </Dialog.Root>
     </div>
   )

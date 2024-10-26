@@ -20,7 +20,7 @@ export const DialogWrapper = styled.dialog({
 })
 
 export const DialogContent = styled.div({
-  background: '#2c2c38',
+  background: colors.c3,
   width: '100%',
   maxWidth: 550,
   padding: '1rem',
