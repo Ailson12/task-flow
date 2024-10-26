@@ -56,11 +56,11 @@ export const Board: FC = () => {
               'Pesquisar os preços de vários concorrentes e experimentar diferentes modelos de negócio',
           },
           {
-            title: 'Adicionar pontos finais de autenticação',
+            title: 'Adicionar pontos finais de autenticação - 02',
           },
           {
             title:
-              'Pesquisar os preços de vários concorrentes e experimentar diferentes modelos de negócio',
+              'Pesquisar os preços de vários concorrentes e experimentar diferentes modelos de negócio - 02',
           },
         ],
       },

@@ -5,4 +5,5 @@ export const colors = {
   c4: '#ffffff',
   c5: '#3c3c48',
   c6: '#21212d',
+  c7: '#f44336',
 }

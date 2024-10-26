@@ -4,6 +4,7 @@ import { Text } from '../Text'
 import { colors } from '@/styles/colors'
 import { useSideBar } from './hooks/use-side-bar'
 import { SidebarLink } from './components/SidebarLink'
+import { CreateNewBoard } from './components/CreateNewBoard'
 
 export const SideBar = () => {
   const { board, onChangeActiveBoard, activeBoardId, open } = useSideBar()
@@ -39,6 +40,8 @@ export const SideBar = () => {
           <SidebarLink color={colors.c1} title={'+ Criar novo quadro'} />
         </li>
       </ul>
+
+      <CreateNewBoard />
     </S.Wrapper>
   )
 }
