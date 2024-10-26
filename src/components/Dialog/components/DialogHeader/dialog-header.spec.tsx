@@ -1,17 +1,30 @@
-import { DialogHeader } from './index'
+import { DialogHeader, DialogHeaderProps } from './index'
 import { describe, expect, it, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+const setupRender = (params: Partial<DialogHeaderProps> = {}) => {
+  const props = {
+    onClose() {},
+    ...params,
+  }
+
+  render(<DialogHeader {...props} />)
+}
 
 describe('<DialogHeader />', () => {
   it('should display the title if provided', () => {
-    render(<DialogHeader title="Title x" />)
+    setupRender({
+      title: 'Title x',
+    })
 
     const title = screen.queryByText('Title x')
     expect(title).toBeTruthy()
   })
 
   it('should display a button to close the dialog', () => {
-    render(<DialogHeader title="Title x" />)
+    setupRender({
+      title: 'Title x',
+    })
 
     const buttonClose = screen.queryByRole('button', {
       name: /fechar/i,
@@ -21,11 +34,9 @@ describe('<DialogHeader />', () => {
   })
 
   it('should accept a child element in place of the title', () => {
-    render(
-      <DialogHeader>
-        <p data-testid="title-custom">Title custom</p>
-      </DialogHeader>
-    )
+    setupRender({
+      children: <p data-testid="title-custom">Title custom</p>,
+    })
 
     const child = screen.queryByTestId('title-custom')
     expect(child).toBeTruthy()
@@ -34,14 +45,32 @@ describe('<DialogHeader />', () => {
   it('should throw an error in the console if it receives title and child', () => {
     const consoleErrorSpy = vi.spyOn(console, 'error')
 
-    render(
-      <DialogHeader title="Title custom x">
-        <p data-testid="title-custom">Title custom</p>
-      </DialogHeader>
-    )
+    setupRender({
+      title: 'Title custom x',
+      children: <p data-testid="title-custom">Title custom</p>,
+    })
 
     expect(consoleErrorSpy).toHaveBeenCalledWith(
       'property title and children cannot be entered together'
     )
+  })
+
+  it('should execute the callback when you click to close', () => {
+    const handleClick = vi.fn()
+
+    setupRender({
+      title: 'Title custom x',
+      children: <p data-testid="title-custom">Title custom</p>,
+      onClose: handleClick,
+    })
+
+    const buttonClose = screen.getByRole('button', {
+      name: /fechar/i,
+    })
+
+    fireEvent.click(buttonClose)
+
+    expect(handleClick).toHaveBeenCalledTimes(1)
+    handleClick.mockClear()
   })
 })

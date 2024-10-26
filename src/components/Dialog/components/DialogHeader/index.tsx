@@ -6,11 +6,19 @@ import * as S from './styles'
 export type DialogHeaderProps = {
   title?: string
   children?: ReactNode
+  onClose(): void
 }
 
-export const DialogHeader: FC<DialogHeaderProps> = ({ title, children }) => {
+export const DialogHeader: FC<DialogHeaderProps> = ({
+  title,
+  children,
+  onClose,
+}) => {
   useEffect(() => {
-    if (title?.trim()?.length && Boolean(children)) {
+    const hasChildren = Boolean(children)
+    const hasTitle = title?.trim()?.length
+
+    if (hasTitle && hasChildren) {
       console.error('property title and children cannot be entered together')
     }
   }, [title, children])
@@ -27,7 +35,7 @@ export const DialogHeader: FC<DialogHeaderProps> = ({ title, children }) => {
         )}
       </div>
 
-      <S.ButtonClose aria-label="Fechar" title="Fechar">
+      <S.ButtonClose aria-label="Fechar" title="Fechar" onClick={onClose}>
         <CloseIcon aria-hidden="true" />
       </S.ButtonClose>
     </S.HeaderWrapper>
