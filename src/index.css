@@ -25,7 +25,9 @@ body {
   font-family: 'Poppins', Arial, Helvetica, sans-serif;
 }
 
-input {
+input,
+textarea,
+select {
   font-family: inherit;
 }
 

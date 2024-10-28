@@ -8,10 +8,9 @@ export const Label = styled.div({
   display: 'block',
 })
 
-export const TextAreaInput = styled.textarea({
+export const SelectWrapper = styled.select({
   width: '100%',
   padding: 8,
-  resize: 'none',
   outline: 0,
   borderRadius: 4,
   color: colors.c4,

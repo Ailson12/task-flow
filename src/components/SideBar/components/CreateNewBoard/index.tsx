@@ -1,5 +1,6 @@
 import { Dialog } from '@/components/Dialog'
 import { Input } from '@/components/Input'
+import { Select } from '@/components/Select'
 import { TextArea } from '@/components/TextArea'
 import { FC, useState } from 'react'
 
@@ -18,6 +19,8 @@ export const CreateNewBoard: FC = () => {
         <div className="d-flex flex-column gap-2">
           <Input label="Título" />
           <TextArea label="Descrição" />
+
+          <Select label="Status" options={[]} />
         </div>
       </Dialog.Root>
     </div>
