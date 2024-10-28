@@ -31,8 +31,16 @@ input {
 
 /* utilities */
 
+.w-100 {
+  width: 100%;
+}
+
 .d-flex {
   display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
 }
 
 .flex-wrap {

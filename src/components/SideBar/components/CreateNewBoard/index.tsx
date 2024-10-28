@@ -1,5 +1,6 @@
 import { Dialog } from '@/components/Dialog'
 import { Input } from '@/components/Input'
+import { TextArea } from '@/components/TextArea'
 import { FC, useState } from 'react'
 
 export const CreateNewBoard: FC = () => {
@@ -14,7 +15,10 @@ export const CreateNewBoard: FC = () => {
           onClose={() => setOpen(false)}
         />
 
-        <Input label="Título" />
+        <div className="d-flex flex-column gap-2">
+          <Input label="Título" />
+          <TextArea label="Descrição" />
+        </div>
       </Dialog.Root>
     </div>
   )

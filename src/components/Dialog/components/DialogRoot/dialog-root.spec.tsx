@@ -13,13 +13,13 @@ const setupRender = (props: Partial<DialogRootProps> = {}) => {
 describe('<DialogRoot />', () => {
   it('should display the child when open is true', () => {
     setupRender({ open: true })
-    const children = screen.queryByText(/content/gi)
+    const children = screen.queryByText(/content/i)
     expect(children).toBeTruthy()
   })
 
   it('should hide the child when open is false', () => {
     setupRender({ open: false })
-    const children = screen.queryByText(/content/gi)
+    const children = screen.queryByText(/content/i)
 
     expect(children).toBeNull()
     expect(children).toBeFalsy()
