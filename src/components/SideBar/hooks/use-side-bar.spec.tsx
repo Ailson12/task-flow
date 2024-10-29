@@ -33,11 +33,11 @@ describe('useSideBar', () => {
       expect(result.current.board.isSuccess).toBe(true)
     })
 
-    const callback = result.current.onChangeActiveBoard('yu931')
+    const callback = result.current.onChangeActiveBoard(1)
     callback()
 
     await waitFor(() => {
-      expect(result.current.activeBoardId).toEqual('yu931')
+      expect(result.current.activeBoardId).toEqual(1)
     })
   })
 
@@ -46,12 +46,14 @@ describe('useSideBar', () => {
       .spyOn(console, 'error')
       .mockImplementation(() => {})
 
+    const INVALID_VALUE = 33
+
     const { result } = setupHook()
-    const callback = result.current.onChangeActiveBoard('invalid-value')
+    const callback = result.current.onChangeActiveBoard(INVALID_VALUE)
     await waitFor(callback)
 
     expect(consoleErrorSpy).toHaveBeenCalledWith(
-      'id invalid-value is not included in the list of boards'
+      `id ${INVALID_VALUE} is not included in the list of boards`
     )
 
     consoleErrorSpy.mockClear()

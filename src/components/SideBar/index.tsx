@@ -36,12 +36,8 @@ export const SideBar = () => {
             />
           </li>
         ))}
-        <li>
-          <SidebarLink color={colors.c1} title={'+ Criar novo quadro'} />
-        </li>
+        <CreateNewBoard />
       </ul>
-
-      <CreateNewBoard />
     </S.Wrapper>
   )
 }

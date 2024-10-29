@@ -5,19 +5,19 @@ import { boardService } from '@/services/board/board-service'
 
 export const useSideBar = () => {
   const { open } = useSidebarStore()
-  const [activeBoardId, setActiveBoardId] = useState('')
+  const [activeBoardId, setActiveBoardId] = useState(0)
 
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['list-boards'],
     queryFn: boardService.findAll,
   })
 
-  const idIsIncludedInBoards = (id: string) => {
+  const idIsIncludedInBoards = (id: number) => {
     const ids = data?.map((board) => board.id)
     return (ids ?? []).includes(id)
   }
 
-  const onChangeActiveBoard = (id: string) => () => {
+  const onChangeActiveBoard = (id: number) => () => {
     const isIncluded = idIsIncludedInBoards(id)
     if (isIncluded) {
       setActiveBoardId(id)

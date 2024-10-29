@@ -1,26 +1,26 @@
-import { Board } from '@/types/board'
+import { TaskStatus } from '@/types/task-status'
 import { http, HttpResponse } from 'msw'
 
 const requests = [
   {
-    url: `${import.meta.env.VITE_API_URL}board`,
+    url: `${import.meta.env.VITE_API_URL}task-status/all`,
     method: 'findAll',
     data: () => {
       return [
         {
           id: 1,
-          title: 'Marketing',
+          title: 'Done',
         },
         {
           id: 2,
-          title: 'RoadMap',
+          title: 'Pending',
         },
-      ] satisfies Board[]
+      ] satisfies TaskStatus[]
     },
   },
 ]
 
-export const boardServiceMock = requests.map((request) => {
+export const taskStatusServiceMock = requests.map((request) => {
   return http.get(request.url, () => {
     return HttpResponse.json(request.data())
   })

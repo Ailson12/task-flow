@@ -1,4 +1,4 @@
-export interface Board {
+export interface TaskStatus {
   id: number
   title: string
 }
