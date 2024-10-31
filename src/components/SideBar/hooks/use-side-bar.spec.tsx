@@ -1,15 +1,13 @@
 import { useSideBar } from './use-side-bar'
 import { describe, expect, it, vi } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { setupWithDefaultProvider } from '@/helpers/setup-render'
 
 const setupHook = () => {
-  const queryClient = new QueryClient()
-
   return renderHook(() => useSideBar(), {
-    wrapper: ({ children }) => (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    ),
+    wrapper: ({ children }) => {
+      return setupWithDefaultProvider(children)
+    },
   })
 }
 

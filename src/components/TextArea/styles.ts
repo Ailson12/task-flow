@@ -1,7 +1,7 @@
 import { colors } from '@/styles/colors'
 import styled from 'styled-components'
 
-export const Label = styled.div({
+export const Label = styled.label({
   color: colors.c4,
   letterSpacing: 1,
   fontSize: 13,

@@ -22,11 +22,21 @@ export const CreateNewBoard: FC = () => {
       </li>
 
       <Dialog.Root open={open}>
-        <Dialog.Header title="Adicionar nova Atividade" onClose={onClose} />
+        <Dialog.Header title="Adicionar novo quadro" onClose={onClose} />
 
         <div className="d-flex flex-column gap-2">
-          <Input label="Título" />
-          <TextArea label="Descrição" />
+          <Input
+            label="Título"
+            inputProps={{
+              name: 'name',
+            }}
+          />
+          <TextArea
+            label="Descrição"
+            textAreaProps={{
+              name: 'description',
+            }}
+          />
 
           <div className="d-flex gap-2 align-end mb-2">
             <Select label="Status" options={taskStatus.options} />

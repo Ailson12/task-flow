@@ -1,15 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { SideBar } from './index'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { setupWithDefaultProvider } from '@/helpers/setup-render'
 
 const setupRender = () => {
-  const queryClient = new QueryClient()
-  return render(<SideBar />, {
-    wrapper: ({ children }) => (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    ),
-  })
+  const component = setupWithDefaultProvider(<SideBar />)
+  return render(component)
 }
 
 const getNumberFromText = (value?: string | null) => {
