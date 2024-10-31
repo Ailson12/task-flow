@@ -6,6 +6,7 @@ import { FC } from 'react'
 import { SidebarLink } from '../SidebarLink'
 import { colors } from '@/styles/colors'
 import { useCreateNewBoard } from './hooks/use-create-new-board'
+import { Button } from '@/components/Button'
 
 export const CreateNewBoard: FC = () => {
   const { open, onOpen, onClose, taskStatus } = useCreateNewBoard()
@@ -27,7 +28,19 @@ export const CreateNewBoard: FC = () => {
           <Input label="Título" />
           <TextArea label="Descrição" />
 
-          <Select label="Status" options={taskStatus.options} />
+          <div className="d-flex gap-2 align-end mb-2">
+            <Select label="Status" options={taskStatus.options} />
+            <Button
+              variant="secondary"
+              style={{
+                fontSize: 14,
+              }}
+            >
+              Adicionar
+            </Button>
+          </div>
+
+          <Button>Salvar</Button>
         </div>
       </Dialog.Root>
     </>
