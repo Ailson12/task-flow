@@ -10,7 +10,8 @@ import { Button } from '@/components/Button'
 import { Chip } from '@/components/Chip'
 
 export const CreateNewBoard: FC = () => {
-  const { open, onOpen, onClose, taskStatus } = useCreateNewBoard()
+  const { open, formik, onOpen, onClose, taskStatus } = useCreateNewBoard()
+
   const { addTaskStatus, removeTaskStatus } = taskStatus
 
   return (
@@ -31,12 +32,16 @@ export const CreateNewBoard: FC = () => {
             label="Título"
             inputProps={{
               name: 'name',
+              value: formik.values.name,
+              onChange: formik.handleChange,
             }}
           />
           <TextArea
             label="Descrição"
             textAreaProps={{
               name: 'description',
+              onChange: formik.handleChange,
+              value: formik.values.description,
             }}
           />
 

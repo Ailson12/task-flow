@@ -1,12 +1,23 @@
 import { OptionSelectType } from '@/components/Select'
 import { taskStatusService } from '@/services/task-status/task-status-service'
 import { useQuery } from '@tanstack/react-query'
+import { useFormik } from 'formik'
 import { useMemo, useState } from 'react'
 
 export const useCreateNewBoard = () => {
   const [open, setOpen] = useState(false)
   const [taskStatusIds, setTaskStatusIds] = useState<number[]>([])
   const [currentTaskStatusId, setCurrentTaskStatusId] = useState(0)
+
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      description: '',
+    },
+    onSubmit(values) {
+      console.log('values: ', values)
+    },
+  })
 
   const { data: taskStatusList, isLoading } = useQuery({
     queryKey: ['list-task-status'],
@@ -58,6 +69,7 @@ export const useCreateNewBoard = () => {
     open,
     onOpen,
     onClose,
+    formik,
     currentTaskStatusId,
     setCurrentTaskStatusId,
     taskStatus: {
