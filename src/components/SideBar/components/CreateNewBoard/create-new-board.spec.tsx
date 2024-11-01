@@ -1,7 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
 import { CreateNewBoard } from './index'
+import { describe, expect, it } from 'vitest'
 import { setupWithDefaultProvider } from '@/helpers/setup-render'
+import { getOptionsWithoutDefault } from '@/components/Select/select.spec'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 const setupRender = () => {
   const component = setupWithDefaultProvider(<CreateNewBoard />)
@@ -67,5 +68,38 @@ describe('<CreateNewBoard />', () => {
     })
 
     expect(saveButton).toBeTruthy()
+  })
+
+  it('should select a status and add it to the list', async () => {
+    setupRender()
+
+    // open dialog
+    const controlDialog = screen.getByText(/criar novo quadro/i)
+    fireEvent.click(controlDialog)
+
+    await waitFor(() => {
+      const options = getOptionsWithoutDefault(screen.queryAllByRole('option'))
+      expect(options).toHaveLength(2)
+    })
+
+    // select first status
+    const select = screen.getByRole<HTMLSelectElement>('combobox')
+    fireEvent.change(select, {
+      target: {
+        value: '1',
+      },
+    })
+
+    // add status to list
+    const buttonAddStatus = screen.getByRole('button', {
+      name: 'Adicionar',
+    })
+    fireEvent.click(buttonAddStatus)
+
+    // check list status
+    const dialog = screen.getByRole('dialog')
+    const statusList = dialog.querySelectorAll('li')
+
+    expect(statusList).toHaveLength(1)
   })
 })

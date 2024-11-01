@@ -69,16 +69,15 @@ export const CreateNewBoard: FC = () => {
               </Button>
             </div>
 
-            <div className="d-flex gap-1 flex-wrap">
+            <ul className="d-flex gap-1 flex-wrap">
               {taskStatus.taskStatusSelected.map((taskStatus) => (
-                <Chip
-                  key={taskStatus.id}
-                  onRemove={() => removeTaskStatus(taskStatus.id)}
-                >
-                  {taskStatus.title}
-                </Chip>
+                <li key={taskStatus.id}>
+                  <Chip onRemove={() => removeTaskStatus(taskStatus.id)}>
+                    {taskStatus.title}
+                  </Chip>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
 
           <Button>Salvar</Button>

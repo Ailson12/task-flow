@@ -13,7 +13,7 @@ export const ChipWrapper = styled.div({
   padding: '6px 12px',
 })
 
-export const ChipCloseWrapper = styled.div({
+export const ChipCloseWrapper = styled.button({
   padding: 1,
   display: 'flex',
   borderRadius: '100%',

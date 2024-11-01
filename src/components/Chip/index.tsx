@@ -13,7 +13,7 @@ export const Chip: FC<ChipProps> = ({ children, onRemove, ...props }) => {
       {children}
 
       {onRemove && (
-        <ChipCloseWrapper>
+        <ChipCloseWrapper onClick={onRemove}>
           <CloseIcon height={18} cursor={'pointer'} width={18} />
         </ChipCloseWrapper>
       )}

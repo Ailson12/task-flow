@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { OptionSelectType, Select } from './index'
 import { useState } from 'react'
 
-const getOptionsWithoutDefault = (options: HTMLOptionElement[]) => {
+export const getOptionsWithoutDefault = (options: HTMLOptionElement[]) => {
   return options.filter((option) => !/selecione/i.test(option.text))
 }
 
