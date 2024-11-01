@@ -7,6 +7,7 @@ import { SidebarLink } from '../SidebarLink'
 import { colors } from '@/styles/colors'
 import { useCreateNewBoard } from './hooks/use-create-new-board'
 import { Button } from '@/components/Button'
+import { Chip } from '@/components/Chip'
 
 export const CreateNewBoard: FC = () => {
   const { open, onOpen, onClose, taskStatus } = useCreateNewBoard()
@@ -63,14 +64,16 @@ export const CreateNewBoard: FC = () => {
               </Button>
             </div>
 
-            {taskStatus.taskStatusSelected.map((taskStatus) => (
-              <div className="d-flex gap-4" key={taskStatus.id}>
-                {taskStatus.title}
-                <button onClick={() => removeTaskStatus(taskStatus.id)}>
-                  remover
-                </button>
-              </div>
-            ))}
+            <div className="d-flex gap-1 flex-wrap">
+              {taskStatus.taskStatusSelected.map((taskStatus) => (
+                <Chip
+                  key={taskStatus.id}
+                  onRemove={() => removeTaskStatus(taskStatus.id)}
+                >
+                  {taskStatus.title}
+                </Chip>
+              ))}
+            </div>
           </div>
 
           <Button>Salvar</Button>
