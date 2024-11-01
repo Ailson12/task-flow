@@ -10,6 +10,7 @@ import { Button } from '@/components/Button'
 
 export const CreateNewBoard: FC = () => {
   const { open, onOpen, onClose, taskStatus } = useCreateNewBoard()
+  const { addTaskStatus, removeTaskStatus } = taskStatus
 
   return (
     <>
@@ -50,9 +51,10 @@ export const CreateNewBoard: FC = () => {
                   },
                 }}
               />
+
               <Button
                 variant="secondary"
-                onClick={taskStatus.addTaskStatus}
+                onClick={addTaskStatus}
                 style={{
                   fontSize: 14,
                 }}
@@ -60,8 +62,14 @@ export const CreateNewBoard: FC = () => {
                 Adicionar
               </Button>
             </div>
+
             {taskStatus.taskStatusSelected.map((taskStatus) => (
-              <div key={taskStatus.id}>{taskStatus.title}</div>
+              <div className="d-flex gap-4" key={taskStatus.id}>
+                {taskStatus.title}
+                <button onClick={() => removeTaskStatus(taskStatus.id)}>
+                  remover
+                </button>
+              </div>
             ))}
           </div>
 

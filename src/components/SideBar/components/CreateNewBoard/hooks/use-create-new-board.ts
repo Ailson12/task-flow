@@ -50,6 +50,10 @@ export const useCreateNewBoard = () => {
     }
   }
 
+  const removeTaskStatus = (id: number) => {
+    setTaskStatusIds(taskStatusIds.filter((value) => value !== id))
+  }
+
   return {
     open,
     onOpen,
@@ -59,6 +63,7 @@ export const useCreateNewBoard = () => {
     taskStatus: {
       isLoading,
       addTaskStatus,
+      removeTaskStatus,
       taskStatusSelected,
       value: currentTaskStatusId,
       options: taskStatusOptions,
