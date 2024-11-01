@@ -3,7 +3,7 @@ import { colors } from '@/styles/colors'
 import { ButtonProps } from '.'
 
 export const ButtonWrapper = styled.button<{
-  variant?: ButtonProps['variant']
+  $variant?: ButtonProps['variant']
 }>(
   {
     background: colors.c1,
@@ -17,8 +17,8 @@ export const ButtonWrapper = styled.button<{
     borderRadius: '1.5rem',
     fontWeight: 600,
   },
-  ({ variant }) => ({
-    ...(variant === 'secondary' && {
+  ({ $variant }) => ({
+    ...($variant === 'secondary' && {
       color: colors.c1,
       background: colors.c4,
     }),

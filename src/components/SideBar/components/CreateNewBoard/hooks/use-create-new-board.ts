@@ -5,6 +5,8 @@ import { useMemo, useState } from 'react'
 
 export const useCreateNewBoard = () => {
   const [open, setOpen] = useState(false)
+  const [taskStatusIds, setTaskStatusIds] = useState<number[]>([])
+  const [currentTaskStatusId, setCurrentTaskStatusId] = useState(0)
 
   const { data: taskStatusList, isLoading } = useQuery({
     queryKey: ['list-task-status'],
@@ -12,22 +14,55 @@ export const useCreateNewBoard = () => {
   })
 
   const taskStatusOptions = useMemo(() => {
-    return (taskStatusList ?? [])?.map<OptionSelectType>((taskStatus) => ({
-      label: taskStatus.title,
-      value: taskStatus.id,
-    }))
-  }, [taskStatusList])
+    const options: OptionSelectType[] = []
+
+    taskStatusList?.forEach((taskStatus) => {
+      if (!taskStatusIds.includes(taskStatus.id)) {
+        options.push({
+          label: taskStatus.title,
+          value: taskStatus.id,
+        })
+      }
+    })
+
+    return options
+  }, [taskStatusList, taskStatusIds])
+
+  const taskStatusSelected = useMemo(() => {
+    return (taskStatusList ?? []).filter((taskStatus) =>
+      taskStatusIds.includes(taskStatus.id)
+    )
+  }, [taskStatusList, taskStatusIds])
 
   const onOpen = () => setOpen(true)
   const onClose = () => setOpen(false)
+
+  const addTaskStatus = () => {
+    if (!currentTaskStatusId) {
+      window.alert('selecione um status')
+      return
+    }
+
+    const isSelected = taskStatusIds.includes(currentTaskStatusId)
+    if (!isSelected) {
+      setTaskStatusIds(taskStatusIds.concat(currentTaskStatusId))
+      setCurrentTaskStatusId(0)
+    }
+  }
 
   return {
     open,
     onOpen,
     onClose,
+    currentTaskStatusId,
+    setCurrentTaskStatusId,
     taskStatus: {
       isLoading,
+      addTaskStatus,
+      taskStatusSelected,
+      value: currentTaskStatusId,
       options: taskStatusOptions,
+      onChange: setCurrentTaskStatusId,
     },
   }
 }

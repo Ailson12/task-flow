@@ -38,16 +38,31 @@ export const CreateNewBoard: FC = () => {
             }}
           />
 
-          <div className="d-flex gap-2 align-end mb-2">
-            <Select label="Status" options={taskStatus.options} />
-            <Button
-              variant="secondary"
-              style={{
-                fontSize: 14,
-              }}
-            >
-              Adicionar
-            </Button>
+          <div className="mb-2">
+            <div className="d-flex gap-2 align-end mb-2">
+              <Select
+                label="Status"
+                options={taskStatus.options}
+                selectOptions={{
+                  value: taskStatus.value,
+                  onChange: ({ target }) => {
+                    taskStatus.onChange(+target.value)
+                  },
+                }}
+              />
+              <Button
+                variant="secondary"
+                onClick={taskStatus.addTaskStatus}
+                style={{
+                  fontSize: 14,
+                }}
+              >
+                Adicionar
+              </Button>
+            </div>
+            {taskStatus.taskStatusSelected.map((taskStatus) => (
+              <div key={taskStatus.id}>{taskStatus.title}</div>
+            ))}
           </div>
 
           <Button>Salvar</Button>

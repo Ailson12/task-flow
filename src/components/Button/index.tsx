@@ -7,7 +7,7 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 export const Button: FC<ButtonProps> = ({ variant, children, ...props }) => {
   return (
-    <S.ButtonWrapper variant={variant} {...props}>
+    <S.ButtonWrapper $variant={variant} {...props}>
       {children}
     </S.ButtonWrapper>
   )
