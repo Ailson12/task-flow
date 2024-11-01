@@ -1,6 +1,6 @@
-import { FC, SelectHTMLAttributes, useEffect, useMemo } from 'react'
-import { SelectWrapper } from './styles'
 import * as S from './styles'
+import { SelectWrapper } from './styles'
+import { FC, SelectHTMLAttributes, useEffect, useMemo } from 'react'
 
 export type OptionSelectType = {
   value: string | number
@@ -40,7 +40,7 @@ export const Select: FC<SelectProps> = ({
     if (optionsIsDuplicated) {
       console.error('duplicate options')
     }
-  }, [optionsIsDuplicated])
+  }, [options, optionsIsDuplicated])
 
   const finalOptions = optionsIsDuplicated ? [] : options
 

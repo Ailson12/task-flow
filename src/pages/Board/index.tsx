@@ -2,7 +2,7 @@ import { Text } from '@/components/Text'
 import { colors } from '@/styles/colors'
 import { FC, useMemo } from 'react'
 import * as S from './styles'
-import { generateUUID } from '@/helpers'
+import { generateUUID } from '@/helpers/generate-uuid'
 
 export const Board: FC = () => {
   const data = useMemo(
