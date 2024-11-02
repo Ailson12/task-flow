@@ -26,6 +26,7 @@ export const Wrapper = styled.aside<{
 
 export const SideBarHeader = styled.header({
   alignItems: 'center',
+  cursor: 'pointer',
   gap: '0.5rem',
   display: 'flex',
   marginBottom: '2rem',

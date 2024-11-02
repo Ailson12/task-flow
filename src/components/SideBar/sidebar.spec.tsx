@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { SideBar } from './index'
 import { setupWithDefaultProvider } from '@/helpers/setup-render'
@@ -66,5 +66,23 @@ describe('<Sidebar/>', () => {
     })
 
     expect(actionNewBoard).toBeTruthy()
+  })
+
+  it('should close the sidebar when the logo is clicked', () => {
+    setupRender()
+
+    const sidebarWrapper = screen.queryByRole('complementary')
+
+    // check it's open
+    const ariaHidden = sidebarWrapper?.getAttribute('aria-hidden')
+    expect(ariaHidden).toEqual('false')
+
+    // close sidebar
+    const logoHeader = screen.getByRole('banner')
+    fireEvent.click(logoHeader)
+
+    // check it's closed
+    const ariaHidden2 = sidebarWrapper?.getAttribute('aria-hidden')
+    expect(ariaHidden2).toEqual('true')
   })
 })

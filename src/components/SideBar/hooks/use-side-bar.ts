@@ -4,7 +4,7 @@ import { useSidebarStore } from '@/store/sidebar.store'
 import { boardService } from '@/services/board/board-service'
 
 export const useSideBar = () => {
-  const { open } = useSidebarStore()
+  const { open, toggleOpen } = useSidebarStore()
   const [activeBoardId, setActiveBoardId] = useState(0)
 
   const { data, isSuccess, isLoading } = useQuery({
@@ -28,6 +28,7 @@ export const useSideBar = () => {
 
   return {
     open,
+    toggleOpen,
     board: {
       isLoading,
       isSuccess,

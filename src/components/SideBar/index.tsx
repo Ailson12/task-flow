@@ -7,11 +7,12 @@ import { SidebarLink } from './components/SidebarLink'
 import { CreateNewBoard } from './components/CreateNewBoard'
 
 export const SideBar = () => {
-  const { board, onChangeActiveBoard, activeBoardId, open } = useSideBar()
+  const { board, onChangeActiveBoard, activeBoardId, open, toggleOpen } =
+    useSideBar()
 
   return (
-    <S.Wrapper $open={open}>
-      <S.SideBarHeader>
+    <S.Wrapper $open={open} aria-hidden={!open}>
+      <S.SideBarHeader onClick={toggleOpen}>
         <img src={logo} alt="logo" width={44} height={44} />
         {open && <h1>TaskFlow</h1>}
       </S.SideBarHeader>
