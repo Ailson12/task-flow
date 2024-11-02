@@ -102,4 +102,45 @@ describe('<CreateNewBoard />', () => {
 
     expect(statusList).toHaveLength(1)
   })
+
+  it('should remove a status when you click on the "X" next to the label', async () => {
+    setupRender()
+
+    // open dialog
+    const controlDialog = screen.getByText(/criar novo quadro/i)
+    fireEvent.click(controlDialog)
+
+    await waitFor(() => {
+      const options = getOptionsWithoutDefault(screen.queryAllByRole('option'))
+      expect(options).toHaveLength(2)
+    })
+
+    // select first status
+    const select = screen.getByRole<HTMLSelectElement>('combobox')
+    fireEvent.change(select, {
+      target: {
+        value: '1',
+      },
+    })
+
+    // add status to list
+    const buttonAddStatus = screen.getByRole('button', {
+      name: 'Adicionar',
+    })
+    fireEvent.click(buttonAddStatus)
+
+    // check status add
+    const dialog = screen.getByRole('dialog')
+    const getStatusList = () => dialog.querySelectorAll('li')
+
+    expect(getStatusList()).toHaveLength(1)
+
+    // remove status
+    const removeButton = screen.getByRole('button', {
+      name: 'Remover status',
+    })
+    fireEvent.click(removeButton)
+
+    expect(getStatusList()).toHaveLength(0)
+  })
 })
