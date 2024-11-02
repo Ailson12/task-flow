@@ -1,21 +1,52 @@
 import { OptionSelectType } from '@/components/Select'
+import { boardService } from '@/services/board/board-service'
 import { taskStatusService } from '@/services/task-status/task-status-service'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useFormik } from 'formik'
 import { useMemo, useState } from 'react'
 
+const initialValues = {
+  title: '',
+  description: '',
+}
+
+type FormValues = typeof initialValues
+
 export const useCreateNewBoard = () => {
+  const queryClient = useQueryClient()
+
   const [open, setOpen] = useState(false)
   const [taskStatusIds, setTaskStatusIds] = useState<number[]>([])
   const [currentTaskStatusId, setCurrentTaskStatusId] = useState(0)
 
+  const onOpen = () => setOpen(true)
+  const onClose = () => setOpen(false)
+
+  const handleSubmit = async (values: FormValues) => {
+    try {
+      const { description } = values
+      await boardService.create({
+        title: values.title,
+        description: description?.length ? description : null,
+        taskStatusIds,
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ['list-boards'],
+      })
+      formik.resetForm()
+      setTaskStatusIds([])
+      onClose()
+      window.alert('Quadro cadastrado com sucesso!')
+    } catch (error) {
+      window.alert('Erro ao cadastrar quadro')
+    }
+  }
+
   const formik = useFormik({
-    initialValues: {
-      name: '',
-      description: '',
-    },
+    initialValues,
     onSubmit(values) {
-      console.log('values: ', values)
+      handleSubmit(values)
     },
   })
 
@@ -44,9 +75,6 @@ export const useCreateNewBoard = () => {
       taskStatusIds.includes(taskStatus.id)
     )
   }, [taskStatusList, taskStatusIds])
-
-  const onOpen = () => setOpen(true)
-  const onClose = () => setOpen(false)
 
   const addTaskStatus = () => {
     if (!currentTaskStatusId) {

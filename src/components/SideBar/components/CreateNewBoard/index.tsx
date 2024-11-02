@@ -11,7 +11,6 @@ import { Chip } from '@/components/Chip'
 
 export const CreateNewBoard: FC = () => {
   const { open, formik, onOpen, onClose, taskStatus } = useCreateNewBoard()
-
   const { addTaskStatus, removeTaskStatus } = taskStatus
 
   return (
@@ -27,12 +26,15 @@ export const CreateNewBoard: FC = () => {
       <Dialog.Root open={open}>
         <Dialog.Header title="Adicionar novo quadro" onClose={onClose} />
 
-        <div className="d-flex flex-column gap-2">
+        <form
+          onSubmit={formik.handleSubmit}
+          className="d-flex flex-column gap-2"
+        >
           <Input
             label="Título"
             inputProps={{
-              name: 'name',
-              value: formik.values.name,
+              name: 'title',
+              value: formik.values.title,
               onChange: formik.handleChange,
             }}
           />
@@ -64,6 +66,7 @@ export const CreateNewBoard: FC = () => {
                 style={{
                   fontSize: 14,
                 }}
+                type="button"
               >
                 Adicionar
               </Button>
@@ -85,8 +88,8 @@ export const CreateNewBoard: FC = () => {
             </ul>
           </div>
 
-          <Button>Salvar</Button>
-        </div>
+          <Button type="submit">Salvar</Button>
+        </form>
       </Dialog.Root>
     </>
   )
