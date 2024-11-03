@@ -4,6 +4,7 @@ import { taskStatusService } from '@/services/task-status/task-status-service'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useFormik } from 'formik'
 import { useMemo, useState } from 'react'
+import { toast } from 'react-toastify'
 
 const initialValues = {
   title: '',
@@ -37,9 +38,9 @@ export const useCreateNewBoard = () => {
       formik.resetForm()
       setTaskStatusIds([])
       onClose()
-      window.alert('Quadro cadastrado com sucesso!')
+      toast.success('Quadro cadastrado com sucesso!')
     } catch (error) {
-      window.alert('Erro ao cadastrar quadro')
+      toast.error('Erro ao cadastrar quadro')
     }
   }
 
