@@ -5,6 +5,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useFormik } from 'formik'
 import { useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
+import { validationSchema } from '../components/CreateNewBoard/validation'
+import { toFormikValidationSchema } from 'zod-formik-adapter'
 
 const initialValues = {
   title: '',
@@ -22,6 +24,14 @@ export const useCreateNewBoard = () => {
 
   const onOpen = () => setOpen(true)
   const onClose = () => setOpen(false)
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema: toFormikValidationSchema(validationSchema),
+    onSubmit(values) {
+      handleSubmit(values)
+    },
+  })
 
   const handleSubmit = async (values: FormValues) => {
     try {
@@ -43,13 +53,6 @@ export const useCreateNewBoard = () => {
       toast.error('Erro ao cadastrar quadro')
     }
   }
-
-  const formik = useFormik({
-    initialValues,
-    onSubmit(values) {
-      handleSubmit(values)
-    },
-  })
 
   const { data: taskStatusList, isLoading } = useQuery({
     queryKey: ['list-task-status'],

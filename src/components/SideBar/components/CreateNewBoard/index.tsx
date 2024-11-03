@@ -1,13 +1,13 @@
-import { Dialog } from '@/components/Dialog'
-import { Input } from '@/components/Input'
-import { Select } from '@/components/Select'
-import { TextArea } from '@/components/TextArea'
 import { FC } from 'react'
-import { SidebarLink } from '../SidebarLink'
 import { colors } from '@/styles/colors'
-import { useCreateNewBoard } from './hooks/use-create-new-board'
-import { Button } from '@/components/Button'
 import { Chip } from '@/components/Chip'
+import { Input } from '@/components/Input'
+import { Button } from '@/components/Button'
+import { Dialog } from '@/components/Dialog'
+import { Select } from '@/components/Select'
+import { SidebarLink } from '../SidebarLink'
+import { TextArea } from '@/components/TextArea'
+import { useCreateNewBoard } from '../../hooks/use-create-new-board'
 
 export const CreateNewBoard: FC = () => {
   const { open, formik, onOpen, onClose, taskStatus } = useCreateNewBoard()
@@ -32,6 +32,7 @@ export const CreateNewBoard: FC = () => {
         >
           <Input
             label="Título"
+            errorMessage={formik.errors.title}
             inputProps={{
               name: 'title',
               value: formik.values.title,
