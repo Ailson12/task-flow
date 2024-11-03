@@ -7,8 +7,9 @@ type Params = {
 }
 
 const makeComponent = (params: Params = {}) => {
-  const props = {
+  const props: SidebarLinkProps = {
     title: 'Board x',
+    isActive: true,
     ...params.props,
   }
 
