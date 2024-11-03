@@ -1,6 +1,7 @@
 import { Text } from './index'
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import { pxToRem } from '@/helpers/px-to-rem'
 
 const getFontSizeByElement = (element: HTMLElement) => {
   return element.style.getPropertyValue('font-size')
@@ -24,8 +25,9 @@ describe('<Text />', () => {
 
     // check is rem
     expect(fontSize).toEqual(expect.stringContaining('rem'))
+
     // check if it converted correctly
-    expect(`${SIZE / 16}rem`).toStrictEqual(fontSize)
+    expect(pxToRem(SIZE)).toStrictEqual(fontSize)
   })
 
   it('should accept other units of measurement if passed as a string', () => {

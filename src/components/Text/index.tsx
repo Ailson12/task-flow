@@ -1,4 +1,5 @@
 import { colors } from '@/styles/colors'
+import { pxToRem } from '@/helpers/px-to-rem'
 import { CSSProperties, FC, ReactNode, useMemo } from 'react'
 
 type Props = CSSProperties & {
@@ -50,7 +51,7 @@ export const Text: FC<Props> = ({
 
   const validSize = useMemo(() => {
     if (isValidSize()) {
-      return sizeIsText ? size : `${size / FONT_SIZE_DEFAULT}rem`
+      return sizeIsText ? size : pxToRem(size)
     }
 
     console.error('font-size is invalid!')
