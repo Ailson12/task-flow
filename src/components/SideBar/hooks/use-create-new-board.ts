@@ -28,9 +28,7 @@ export const useCreateNewBoard = () => {
   const formik = useFormik({
     initialValues,
     validationSchema: toFormikValidationSchema(validationSchema),
-    onSubmit(values) {
-      handleSubmit(values)
-    },
+    onSubmit: (values) => handleSubmit(values),
   })
 
   const handleSubmit = async (values: FormValues) => {
@@ -82,7 +80,7 @@ export const useCreateNewBoard = () => {
 
   const addTaskStatus = () => {
     if (!currentTaskStatusId) {
-      window.alert('selecione um status')
+      toast.warn('selecione um status')
       return
     }
 

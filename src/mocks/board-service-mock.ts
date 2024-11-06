@@ -1,10 +1,12 @@
 import { Board } from '@/types/board'
 import { http, HttpResponse } from 'msw'
 
+type Method = keyof typeof http
+
 const requests = [
   {
     url: `${import.meta.env.VITE_API_URL}board`,
-    method: 'findAll',
+    method: 'get' as Method,
     data: () => {
       return [
         {
@@ -18,10 +20,17 @@ const requests = [
       ] satisfies Board[]
     },
   },
+  {
+    url: `${import.meta.env.VITE_API_URL}board`,
+    method: 'post' satisfies Method,
+    data: () => {
+      return null
+    },
+  },
 ]
 
 export const boardServiceMock = requests.map((request) => {
-  return http.get(request.url, () => {
+  return http[request.method as Method](request.url, () => {
     return HttpResponse.json(request.data())
   })
 })
