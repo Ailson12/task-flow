@@ -9,6 +9,20 @@ const setupRender = () => {
   return render(component)
 }
 
+const openDialog = async () => {
+  const controlDialog = screen.getByText(/criar novo quadro/i)
+  fireEvent.click(controlDialog)
+}
+
+const clickSaveButton = async () => {
+  return waitFor(() => {
+    const saveButton = screen.getByRole('button', {
+      name: 'Salvar',
+    })
+    fireEvent.click(saveButton)
+  })
+}
+
 describe('<CreateNewBoard />', () => {
   it('should start with the dialog closed', () => {
     setupRender()
@@ -17,34 +31,25 @@ describe('<CreateNewBoard />', () => {
     expect(dialog).toBeNull()
   })
 
-  it('should open the dialog when you click on "criar novo quadro"', () => {
+  it('should open the dialog when you click on "criar novo quadro"', async () => {
     setupRender()
-
-    // open dialog
-    const controlDialog = screen.getByText(/criar novo quadro/i)
-    fireEvent.click(controlDialog)
+    await openDialog()
 
     const dialog = screen.queryByRole('dialog')
     expect(dialog).toBeTruthy()
   })
 
-  it('should display the title "adicionar novo quadro" in the dialog', () => {
+  it('should display the title "adicionar novo quadro" in the dialog', async () => {
     setupRender()
-
-    // open dialog
-    const controlDialog = screen.getByText(/criar novo quadro/i)
-    fireEvent.click(controlDialog)
+    await openDialog()
 
     const title = screen.queryByText(/adicionar novo quadro/i)
     expect(title).toBeTruthy()
   })
 
-  it('should display the name, description and status fields', () => {
+  it('should display the name, description and status fields', async () => {
     setupRender()
-
-    // open dialog
-    const controlDialog = screen.getByText(/criar novo quadro/i)
-    fireEvent.click(controlDialog)
+    await openDialog()
 
     const inputName = screen.getByLabelText('Título')
     const inputDescription = screen.queryByLabelText('Descrição')
@@ -56,12 +61,9 @@ describe('<CreateNewBoard />', () => {
     expect(selectStatus).toBeTruthy()
   })
 
-  it('should display a save button', () => {
+  it('should display a save button', async () => {
     setupRender()
-
-    // open dialog
-    const controlDialog = screen.getByText(/criar novo quadro/i)
-    fireEvent.click(controlDialog)
+    await openDialog()
 
     const saveButton = screen.queryByRole('button', {
       name: 'Salvar',
@@ -72,10 +74,7 @@ describe('<CreateNewBoard />', () => {
 
   it('should select a status and add it to the list', async () => {
     setupRender()
-
-    // open dialog
-    const controlDialog = screen.getByText(/criar novo quadro/i)
-    fireEvent.click(controlDialog)
+    await openDialog()
 
     await waitFor(() => {
       const options = getOptionsWithoutDefault(screen.queryAllByRole('option'))
@@ -105,10 +104,7 @@ describe('<CreateNewBoard />', () => {
 
   it('should remove a status when you click on the "X" next to the label', async () => {
     setupRender()
-
-    // open dialog
-    const controlDialog = screen.getByText(/criar novo quadro/i)
-    fireEvent.click(controlDialog)
+    await openDialog()
 
     await waitFor(() => {
       const options = getOptionsWithoutDefault(screen.queryAllByRole('option'))
@@ -142,5 +138,33 @@ describe('<CreateNewBoard />', () => {
     fireEvent.click(removeButton)
 
     expect(getStatusList()).toHaveLength(0)
+  })
+
+  it('should display the validations to the user when they click the "save" button', async () => {
+    setupRender()
+    await openDialog()
+    await clickSaveButton()
+
+    // check title is required
+    const titleField = screen.queryByText('Título')
+    expect(titleField?.textContent).toContain('Campo obrigatório')
+
+    // set large value in description
+    const descriptionField = screen.getByRole('textbox', {
+      name: /descrição/i,
+    })
+    fireEvent.change(descriptionField, {
+      target: {
+        value: 'x'.repeat(600),
+      },
+    })
+
+    await clickSaveButton()
+
+    // check max length description
+    const descriptionLabel = screen.queryByText(/descrição/i)
+    expect(descriptionLabel?.textContent).toContain(
+      'Deve conter no máximo 500 caracteres'
+    )
   })
 })

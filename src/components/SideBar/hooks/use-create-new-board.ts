@@ -33,6 +33,10 @@ export const useCreateNewBoard = () => {
 
   const handleSubmit = async (values: FormValues) => {
     try {
+      if (!taskStatusIds.length) {
+        toast.warn('Adicione um status')
+      }
+
       const { description } = values
       await boardService.create({
         title: values.title,

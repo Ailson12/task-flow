@@ -37,4 +37,35 @@ describe('<TextArea />', () => {
     })
     expect(textarea.value).toBe('task description')
   })
+
+  it('should display an error message below the input', () => {
+    render(
+      <TextArea
+        errorMessage="Required field"
+        label="Description"
+        textAreaProps={{
+          name: 'description',
+        }}
+      />
+    )
+
+    const errorMessageText = screen.queryByText(/required field/i)
+    expect(errorMessageText).toBeTruthy()
+    expect(errorMessageText?.getAttribute('aria-hidden')).toEqual('false')
+  })
+
+  it('should hide the error paragraph if the message is empty', () => {
+    render(
+      <TextArea
+        errorMessage=""
+        label="Description"
+        textAreaProps={{
+          name: 'description',
+        }}
+      />
+    )
+
+    const errorMessage = screen.queryByRole('paragraph')
+    expect(errorMessage).toBeNull()
+  })
 })
