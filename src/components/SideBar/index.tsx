@@ -1,6 +1,7 @@
 import * as S from './styles'
-import logo from '@/assets/logo.svg'
 import { Text } from '../Text'
+import { Loading } from '../Loading'
+import logo from '@/assets/logo.svg'
 import { colors } from '@/styles/colors'
 import { useSideBar } from './hooks/use-side-bar'
 import { SidebarLink } from './components/SidebarLink'
@@ -26,6 +27,13 @@ export const SideBar = () => {
       >
         TODOS QUADROS ({board.items.length})
       </Text>
+
+      <Loading
+        isVisible={board.isLoading}
+        spanProps={{
+          'data-testid': 'sidebar-loader',
+        }}
+      />
 
       <ul>
         {board.items.map((board) => (

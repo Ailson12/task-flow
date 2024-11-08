@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { colors } from '@/styles/colors'
 
 export const LoadingWrapper = styled.span({
   width: '4rem',
@@ -9,7 +10,7 @@ export const LoadingWrapper = styled.span({
   position: 'relative',
   boxSizing: 'border-box',
   animation: 'rotation 1s linear infinite',
-  border: '3px solid red',
+  border: `3px solid ${colors.c1}`,
   '&:after': {
     content: '""',
     position: 'absolute',
@@ -21,7 +22,7 @@ export const LoadingWrapper = styled.span({
     borderRadius: '50%',
     boxSizing: 'border-box',
     border: '3px solid',
-    borderColor: '#FF3D00 transparent',
+    borderColor: `${colors.c1} transparent`,
   },
   '@keyframes rotation': {
     '0%': {

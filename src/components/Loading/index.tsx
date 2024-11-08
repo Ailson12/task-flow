@@ -9,5 +9,5 @@ type LoadingProps = {
 export const Loading: FC<LoadingProps> = ({ isVisible = false, spanProps }) => {
   if (!isVisible) return null
 
-  return <LoadingWrapper {...spanProps} />
+  return <LoadingWrapper {...spanProps} className="loader" aria-live="polite" />
 }

@@ -1,6 +1,12 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import {
+  render,
+  screen,
+  waitFor,
+  fireEvent,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import { SideBar } from './index'
+import { describe, expect, it } from 'vitest'
 import { setupWithDefaultProvider } from '@/helpers/setup-render'
 
 const setupRender = () => {
@@ -40,6 +46,21 @@ describe('<Sidebar/>', () => {
       const total = getNumberFromText(textContent)
       expect(total).toBe(2)
     })
+  })
+
+  it('should display a loading while searching for boards', () => {
+    setupRender()
+    const loader = screen.queryByTestId('sidebar-loader')
+    expect(loader).toBeTruthy()
+  })
+
+  it('should show a load while the data is loaded and then disappear when finished', async () => {
+    setupRender()
+
+    const loader = screen.queryByTestId('sidebar-loader')
+    expect(loader).toBeTruthy()
+
+    await waitForElementToBeRemoved(loader)
   })
 
   it('should display a list of the boards', async () => {
