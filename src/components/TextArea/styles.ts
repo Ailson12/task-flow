@@ -1,5 +1,5 @@
-import { colors } from '@/styles/colors'
 import styled from 'styled-components'
+import { colors } from '@/styles/colors'
 
 export const Label = styled.label({
   color: colors.c4,
@@ -18,3 +18,18 @@ export const TextAreaInput = styled.textarea({
   border: `2px solid ${colors.c5}`,
   background: colors.c3,
 })
+
+export const ErrorMessage = styled.p<{
+  $isVisible?: boolean
+}>(
+  {
+    fontSize: 11,
+    color: colors.c7,
+    marginTop: 4,
+    lineHeight: 1,
+    letterSpacing: 1.5,
+  },
+  ({ $isVisible }) => ({
+    opacity: $isVisible ? 1 : 0,
+  })
+)

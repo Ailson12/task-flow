@@ -41,6 +41,7 @@ export const CreateNewBoard: FC = () => {
           />
           <TextArea
             label="Descrição"
+            errorMessage={formik.errors.description}
             textAreaProps={{
               name: 'description',
               onChange: formik.handleChange,
