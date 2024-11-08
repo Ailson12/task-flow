@@ -1,5 +1,6 @@
+import { toast } from 'react-toastify'
 import { CreateNewBoard } from './index'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { setupWithDefaultProvider } from '@/helpers/setup-render'
 import { getOptionsWithoutDefault } from '@/components/Select/select.spec'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -166,5 +167,60 @@ describe('<CreateNewBoard />', () => {
     expect(descriptionLabel?.textContent).toContain(
       'Deve conter no máximo 500 caracteres'
     )
+  })
+
+  it('should validate minimum status selected', async () => {
+    setupRender()
+    await openDialog()
+
+    const titleField = screen.getByLabelText<HTMLInputElement>('Título')
+    fireEvent.change(titleField, {
+      target: {
+        value: 'Social media',
+      },
+    })
+
+    const toastMock = vi.spyOn(toast, 'warn')
+    await clickSaveButton()
+
+    expect(toastMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('should submit the form if the title and status are selected', async () => {
+    setupRender()
+    await openDialog()
+
+    await waitFor(() => {
+      const options = getOptionsWithoutDefault(screen.queryAllByRole('option'))
+      expect(options).toHaveLength(2)
+    })
+
+    // fill input
+    const titleField = screen.getByLabelText<HTMLInputElement>('Título')
+    fireEvent.change(titleField, {
+      target: {
+        value: 'Social media',
+      },
+    })
+
+    // select first status
+    const select = screen.getByRole<HTMLSelectElement>('combobox')
+    fireEvent.change(select, {
+      target: {
+        value: 1,
+      },
+    })
+
+    // add status to list
+    const buttonAddStatus = screen.getByRole('button', {
+      name: 'Adicionar',
+    })
+    fireEvent.click(buttonAddStatus)
+
+    const toastMock = vi.spyOn(toast, 'success')
+    await clickSaveButton()
+
+    expect(toastMock).toHaveBeenCalledTimes(1)
+    expect(toastMock).toHaveBeenCalledWith('Quadro cadastrado com sucesso!')
   })
 })
