@@ -14,7 +14,11 @@ export default defineConfig({
     testTimeout: 10000,
     setupFiles: 'src/configs/test/setupTests.ts',
     coverage: {
-      exclude: [...coverageConfigDefaults.exclude, 'src/router/index.tsx'],
+      exclude: [
+        ...coverageConfigDefaults.exclude,
+        'src/main.tsx',
+        'src/router/index.tsx',
+      ],
     },
   },
   resolve: {

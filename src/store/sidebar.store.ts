@@ -3,11 +3,14 @@ import { persist } from 'zustand/middleware'
 
 type State = {
   open: boolean
+}
+
+type Action = {
   toggleOpen(): void
 }
 
 export const useSidebarStore = create(
-  persist<State>(
+  persist<State & Action>(
     (set, get) => ({
       open: true,
       toggleOpen() {

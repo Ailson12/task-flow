@@ -1,30 +1,32 @@
-import { useState } from 'react'
+import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useBoardStore } from '@/store/board.store'
 import { useSidebarStore } from '@/store/sidebar.store'
 import { boardService } from '@/services/board/board-service'
 
 export const useSideBar = () => {
   const { open, toggleOpen } = useSidebarStore()
-  const [activeBoardId, setActiveBoardId] = useState(0)
+  const { boardSelected, setBoardSelected } = useBoardStore()
 
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['list-boards'],
     queryFn: boardService.findAll,
   })
 
-  const idIsIncludedInBoards = (id: number) => {
-    const ids = data?.map((board) => board.id)
-    return (ids ?? []).includes(id)
+  const findBoardById = (id: number) => {
+    return data?.find((board) => board.id === id)
   }
 
   const onChangeActiveBoard = (id: number) => () => {
-    const isIncluded = idIsIncludedInBoards(id)
-    if (isIncluded) {
-      setActiveBoardId(id)
+    const board = findBoardById(id)
+    if (board) {
+      setBoardSelected(board)
     } else {
       console.error(`id ${id} is not included in the list of boards`)
     }
   }
+
+  const activeBoardId = useMemo(() => boardSelected?.id ?? 0, [boardSelected])
 
   return {
     open,

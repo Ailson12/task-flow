@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { colors } from '@/styles/colors'
-import { ButtonProps } from '.'
+import { ButtonProps } from './index'
 
 export const ButtonWrapper = styled.button<{
   $variant?: ButtonProps['variant']
