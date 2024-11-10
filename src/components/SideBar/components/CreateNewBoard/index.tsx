@@ -54,7 +54,7 @@ export const CreateNewBoard: FC = () => {
               <Select
                 label="Status"
                 options={taskStatus.options}
-                selectOptions={{
+                selectProps={{
                   value: taskStatus.value,
                   onChange: ({ target }) => {
                     taskStatus.onChange(+target.value)

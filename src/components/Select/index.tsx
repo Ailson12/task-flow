@@ -9,15 +9,19 @@ export type OptionSelectType = {
 
 export type SelectProps = {
   label?: string
+  errorMessage?: string
   options: OptionSelectType[]
-  selectOptions?: SelectHTMLAttributes<HTMLSelectElement>
+  selectProps?: SelectHTMLAttributes<HTMLSelectElement>
 }
 
 export const Select: FC<SelectProps> = ({
   label,
-  selectOptions,
+  selectProps,
+  errorMessage,
   options = [],
 }) => {
+  const hasErrorMessage = (errorMessage ?? '').trim().length > 0
+
   const getUniqueOptions = () => {
     const values: string[] = []
     options.forEach(({ value }) => {
@@ -48,7 +52,7 @@ export const Select: FC<SelectProps> = ({
     <div className="w-100">
       <S.Label>
         {label}
-        <SelectWrapper {...selectOptions}>
+        <SelectWrapper {...selectProps}>
           <option value="">Selecione...</option>
           {finalOptions.map((option) => (
             <option key={option.value} value={option.value}>
@@ -56,6 +60,13 @@ export const Select: FC<SelectProps> = ({
             </option>
           ))}
         </SelectWrapper>
+
+        <S.ErrorMessage
+          $isVisible={hasErrorMessage}
+          aria-hidden={!hasErrorMessage}
+        >
+          {errorMessage}
+        </S.ErrorMessage>
       </S.Label>
     </div>
   )

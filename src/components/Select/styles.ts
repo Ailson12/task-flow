@@ -17,3 +17,18 @@ export const SelectWrapper = styled.select({
   border: `2px solid ${colors.c5}`,
   background: colors.c3,
 })
+
+export const ErrorMessage = styled.p<{
+  $isVisible?: boolean
+}>(
+  {
+    fontSize: 11,
+    color: colors.c7,
+    marginTop: 4,
+    lineHeight: 1,
+    letterSpacing: 1.5,
+  },
+  ({ $isVisible }) => ({
+    opacity: $isVisible ? 1 : 0,
+  })
+)

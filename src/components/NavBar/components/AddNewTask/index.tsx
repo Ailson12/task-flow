@@ -41,7 +41,7 @@ export const AddNewTask: FC<AddNewTaskProps> = ({ open, onClose }) => {
         <Select
           label="Status"
           options={taskStatus.options}
-          selectOptions={{
+          selectProps={{
             value: taskStatus.value,
             className: 'mb-2',
             onChange: ({ target }) => {

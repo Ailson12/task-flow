@@ -35,6 +35,7 @@ export const useCreateNewBoard = () => {
     try {
       if (!taskStatusIds.length) {
         toast.warn('Adicione um status')
+        return null
       }
 
       const { description } = values

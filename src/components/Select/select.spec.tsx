@@ -1,7 +1,7 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { useState } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { OptionSelectType, Select } from './index'
-import { useState } from 'react'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 export const getOptionsWithoutDefault = (options: HTMLOptionElement[]) => {
   return options.filter((option) => !/selecione/i.test(option.text))
@@ -106,7 +106,7 @@ describe('<Select />', () => {
 
       return (
         <Select
-          selectOptions={{
+          selectProps={{
             value,
             onChange: ({ target }) => setValue(target.value),
           }}
@@ -127,5 +127,38 @@ describe('<Select />', () => {
       },
     })
     expect(select.value).toBe('love-music')
+  })
+
+  it('should display an error message below the select', () => {
+    render(
+      <Select
+        errorMessage="Required field"
+        label="Name"
+        options={[]}
+        selectProps={{
+          name: 'status',
+        }}
+      />
+    )
+
+    const errorMessageText = screen.queryByText(/required field/i)
+    expect(errorMessageText).toBeTruthy()
+    expect(errorMessageText?.getAttribute('aria-hidden')).toEqual('false')
+  })
+
+  it('should hide the error paragraph if the message is empty', () => {
+    render(
+      <Select
+        errorMessage=""
+        label="Name"
+        options={[]}
+        selectProps={{
+          name: 'status',
+        }}
+      />
+    )
+
+    const errorMessage = screen.queryByRole('paragraph')
+    expect(errorMessage).toBeNull()
   })
 })
