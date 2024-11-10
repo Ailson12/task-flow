@@ -12,7 +12,9 @@ type AddNewTaskProps = {
 }
 
 export const AddNewTask: FC<AddNewTaskProps> = ({ open, onClose }) => {
-  const { formik, taskStatus } = useAddNewTask()
+  const { formik, taskStatus } = useAddNewTask({
+    onClose,
+  })
 
   return (
     <Dialog.Root open={open}>
@@ -41,12 +43,11 @@ export const AddNewTask: FC<AddNewTaskProps> = ({ open, onClose }) => {
         <Select
           label="Status"
           options={taskStatus.options}
+          errorMessage={formik.errors.taskStatusId}
           selectProps={{
-            value: taskStatus.value,
-            className: 'mb-2',
-            onChange: ({ target }) => {
-              taskStatus.onChange(+target.value)
-            },
+            name: 'taskStatusId',
+            onChange: formik.handleChange,
+            value: formik.values.taskStatusId,
           }}
         />
 

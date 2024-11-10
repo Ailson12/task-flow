@@ -14,11 +14,11 @@ export const Container = styled.div<{
     cursor: 'pointer',
     '&::before': {
       height: '100%',
-      width: '100%',
+      width: 'calc(100% + 1.5rem)',
       top: 0,
       borderRadius: '0 1.5rem 1.5rem 0',
       zIndex: -1,
-      right: '1.5rem',
+      right: 0,
       position: 'absolute',
       content: '""',
       display: 'flex',

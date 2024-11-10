@@ -1,11 +1,13 @@
+import { useMemo } from 'react'
 import { useFormik } from 'formik'
-import { useMemo, useState } from 'react'
+import { toast } from 'react-toastify'
 import { useQuery } from '@tanstack/react-query'
+import { useBoardStore } from '@/store/board.store'
 import { OptionSelectType } from '@/components/Select'
+import { taskService } from '@/services/task/task-service'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
 import { validationSchema } from '../components/AddNewTask/validation'
 import { taskStatusService } from '@/services/task-status/task-status-service'
-import { useBoardStore } from '@/store/board.store'
 
 const initialValues = {
   title: '',
@@ -15,9 +17,12 @@ const initialValues = {
 
 type FormValues = typeof initialValues
 
-export const useAddNewTask = () => {
+type Params = {
+  onClose?: () => void
+}
+
+export const useAddNewTask = (params: Params = {}) => {
   const { boardSelected } = useBoardStore()
-  const [currentTaskStatusId, setCurrentTaskStatusId] = useState(0)
 
   const formik = useFormik({
     initialValues,
@@ -25,8 +30,21 @@ export const useAddNewTask = () => {
     onSubmit: (values) => handleSubmit(values),
   })
 
-  const handleSubmit = (values: FormValues) => {
-    console.log('values: ', values)
+  const handleSubmit = async (values: FormValues) => {
+    try {
+      await taskService.create({
+        title: values.title,
+        description: values.description,
+        taskStatusId: Number(values.taskStatusId),
+        boardId: boardSelected?.id ?? 0,
+      })
+
+      params.onClose?.()
+      formik.resetForm()
+      toast.success('Atividade cadastrada com sucesso!')
+    } catch (error) {
+      toast.error('Erro ao cadastrar atividade')
+    }
   }
 
   const { data: taskStatusList } = useQuery({
@@ -49,8 +67,6 @@ export const useAddNewTask = () => {
     formik,
     taskStatus: {
       options: taskStatusOptions,
-      value: currentTaskStatusId,
-      onChange: setCurrentTaskStatusId,
     },
   }
 }
