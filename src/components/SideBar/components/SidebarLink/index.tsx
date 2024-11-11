@@ -1,8 +1,8 @@
-import { FC, useMemo } from 'react'
-import BoardIcon from '@/assets/board-icon.svg?react'
-import { Text } from '@/components/Text'
 import * as S from './styles'
+import { FC, useMemo } from 'react'
+import { Text } from '@/components/Text'
 import { colors } from '@/styles/colors'
+import BoardIcon from '@/assets/board-icon.svg?react'
 
 export type SidebarLinkProps = {
   color?: string
@@ -27,7 +27,12 @@ export const SidebarLink: FC<SidebarLinkProps> = ({
 
   return (
     <S.Container $isActive={isActive} onClick={onClick}>
-      <BoardIcon height={22} width={22} fill={currentColor} />
+      <BoardIcon
+        style={{ minWidth: 22 }}
+        height={22}
+        width={22}
+        fill={currentColor}
+      />
 
       <Text color={currentColor} weight={500}>
         {title}

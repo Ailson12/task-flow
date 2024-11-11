@@ -5,3 +5,7 @@ export type CreateTask = {
   taskStatusId: number
   boardId: number
 }
+
+export type FindTaskByBoardParams = {
+  boardId: number
+}

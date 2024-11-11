@@ -13,7 +13,6 @@ export const ButtonWrapper = styled.button<{
     cursor: 'pointer',
     letterSpacing: 1,
     lineHeight: 1,
-    height: '100%',
     borderRadius: '1.5rem',
     fontWeight: 600,
   },
