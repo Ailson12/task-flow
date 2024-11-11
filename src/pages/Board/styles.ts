@@ -1,5 +1,6 @@
-import { colors } from '@/styles/colors'
 import styled from 'styled-components'
+import { colors } from '@/styles/colors'
+import { pxToRem } from '@/helpers/px-to-rem'
 
 export const Wrapper = styled.div({
   position: 'relative',
@@ -24,6 +25,7 @@ export const StatusContainer = styled.div({
   flexWrap: 'wrap',
   position: 'sticky',
   top: 0,
+  minWidth: pxToRem(190),
   background: colors.c6,
   paddingBottom: '1rem',
 })

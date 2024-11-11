@@ -1,10 +1,11 @@
 import { useMemo } from 'react'
-import { Task, TaskGrouped } from '@/types/task'
+import { TaskGrouped } from '@/types/task'
 import { TaskStatus } from '@/types/task-status'
 import { useQuery } from '@tanstack/react-query'
 import { useBoardStore } from '@/store/board.store'
 import { generateUUID } from '@/helpers/generate-uuid'
 import { taskService } from '@/services/task/task-service'
+import { taskStatusService } from '@/services/task-status/task-status-service'
 
 export const useBoard = () => {
   const { boardSelected } = useBoardStore()
@@ -19,16 +20,14 @@ export const useBoard = () => {
     enabled: Boolean(boardSelected?.id),
   })
 
-  const getTasksGroupedByStatus = () => {
-    const groupedData = new Map<number, Task[]>()
-
-    tasks?.forEach((task) => {
-      const targetTasks = groupedData.get(task.taskStatus.id) ?? []
-      groupedData.set(task.taskStatus.id, targetTasks.concat(task))
-    })
-
-    return Array.from(groupedData.values())
-  }
+  const { data: tasksStatus } = useQuery({
+    queryKey: ['list-task-status', boardSelected?.id],
+    queryFn: () =>
+      taskStatusService.findAllByBoard({
+        boardId: boardSelected?.id ?? 0,
+      }),
+    enabled: Boolean(boardSelected?.id),
+  })
 
   const getColorByStatus = (taskStatus: TaskStatus) => {
     const colors = new Map<string, string>([
@@ -42,18 +41,19 @@ export const useBoard = () => {
   }
 
   const tasksFormatted = useMemo(() => {
-    const tasksGrouped = getTasksGroupedByStatus()
+    return (tasksStatus ?? [])?.map<TaskGrouped>((status) => {
+      const tasksByStatus = tasks?.filter(
+        (task) => task.taskStatus.id === status.id
+      )
 
-    return tasksGrouped.map<TaskGrouped>((tasks) => {
-      const status = tasks[0]?.taskStatus
       return {
-        tasks,
         status,
         id: generateUUID(),
+        tasks: tasksByStatus ?? [],
         color: getColorByStatus(status),
       }
     })
-  }, [tasks])
+  }, [tasks, tasksStatus])
 
   return {
     tasksFormatted,
