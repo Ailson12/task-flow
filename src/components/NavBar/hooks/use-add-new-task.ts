@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useFormik } from 'formik'
 import { toast } from 'react-toastify'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useBoardStore } from '@/store/board.store'
 import { OptionSelectType } from '@/components/Select'
 import { taskService } from '@/services/task/task-service'
@@ -22,6 +22,7 @@ type Params = {
 }
 
 export const useAddNewTask = (params: Params = {}) => {
+  const queryClient = useQueryClient()
   const { boardSelected } = useBoardStore()
 
   const formik = useFormik({
@@ -41,6 +42,9 @@ export const useAddNewTask = (params: Params = {}) => {
 
       params.onClose?.()
       formik.resetForm()
+      queryClient.invalidateQueries({
+        queryKey: ['list-tasks'],
+      })
       toast.success('Atividade cadastrada com sucesso!')
     } catch (error) {
       toast.error('Erro ao cadastrar atividade')

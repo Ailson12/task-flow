@@ -11,7 +11,7 @@ export const useBoard = () => {
   const { boardSelected } = useBoardStore()
 
   const { data: tasks } = useQuery({
-    queryKey: ['list-task', boardSelected?.id],
+    queryKey: ['list-tasks', boardSelected?.id],
     queryFn: () => {
       return taskService.findAllByBoard({
         boardId: boardSelected?.id ?? 0,
