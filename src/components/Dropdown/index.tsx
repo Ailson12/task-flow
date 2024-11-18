@@ -1,24 +1,42 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import MoreVertIcon from '@/assets/more-vert-icon.svg'
-import { DropdownList, DropdownListItem, DropdownWrapper } from './styles'
+import {
+  DropdownBackground,
+  DropdownList,
+  DropdownListItem,
+  DropdownWrapper,
+} from './styles'
+import { DropdownItem, useDropdown } from './hooks/useDropdown'
 
 type DropdownProps = {
-  items: string[]
+  items: DropdownItem[]
 }
 
 export const Dropdown: FC<DropdownProps> = ({ items }) => {
-  const [isVisible, setIsVisible] = useState(false)
+  const { listIsOpen, isVisible, toggleVisible, onClose } = useDropdown({
+    items,
+  })
 
   return (
     <DropdownWrapper>
-      <button onClick={() => setIsVisible(!isVisible)}>
+      <DropdownBackground $isVisible={isVisible} onClick={onClose} />
+
+      <button onClick={toggleVisible}>
         <img src={MoreVertIcon} alt="mais ações" height={28} width={28} />
       </button>
 
-      {isVisible && (
+      {listIsOpen && (
         <DropdownList>
           {items.map((item) => (
-            <DropdownListItem key={item}>{item}</DropdownListItem>
+            <DropdownListItem
+              key={item.key}
+              onClick={() => {
+                onClose()
+                item.onClick(item)
+              }}
+            >
+              {item.label}
+            </DropdownListItem>
           ))}
         </DropdownList>
       )}
