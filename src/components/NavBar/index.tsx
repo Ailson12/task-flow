@@ -1,18 +1,21 @@
 import * as S from './styles'
 import { Text } from '../Text'
 import { Button } from '../Button'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { Dropdown } from '../Dropdown'
 import MenuIcon from '@/assets/menu.svg?react'
-import { useBoardStore } from '@/store/board.store'
+import { DialogConfirm } from '../DialogConfirm'
 import { AddNewTask } from './components/AddNewTask'
-import { useSidebarStore } from '@/store/sidebar.store'
+import { useNavbar } from './hooks/useNavbar'
 
 export const NavBar: FC = () => {
-  const [taskOpen, setTaskOpen] = useState(false)
-
-  const { toggleOpen } = useSidebarStore()
-  const { boardSelected } = useBoardStore()
+  const {
+    taskOpen,
+    toggleOpen,
+    boardSelected,
+    removeBoardSelected,
+    confirmRemoveIsOpen,
+  } = useNavbar()
 
   return (
     <S.Container>
@@ -30,28 +33,39 @@ export const NavBar: FC = () => {
       </S.SidebarControl>
 
       <div className="d-flex align-center flex-wrap gap-1">
-        <Button onClick={() => setTaskOpen(true)}>Nova atividade</Button>
-        <Dropdown
-          items={[
-            {
-              key: 'board-trash',
-              label: 'Excluir',
-              onClick: (row) => {
-                console.log('trash', row)
+        <Button onClick={() => taskOpen.onChange(true)}>Nova atividade</Button>
+        {boardSelected && (
+          <Dropdown
+            items={[
+              {
+                key: 'board-trash',
+                label: 'Excluir',
+                onClick() {
+                  confirmRemoveIsOpen.onChange(true)
+                },
               },
-            },
-            {
-              key: 'board-edit',
-              label: 'Editar',
-              onClick: (row) => {
-                console.log('edti', row)
+              {
+                key: 'board-edit',
+                label: 'Editar',
+                onClick: (row) => {
+                  console.log('edti', row)
+                },
               },
-            },
-          ]}
-        />
+            ]}
+          />
+        )}
       </div>
 
-      <AddNewTask open={taskOpen} onClose={() => setTaskOpen(false)} />
+      <AddNewTask
+        open={taskOpen.value}
+        onClose={() => taskOpen.onChange(false)}
+      />
+
+      <DialogConfirm
+        onConfirm={removeBoardSelected}
+        open={confirmRemoveIsOpen.value}
+        onClose={() => confirmRemoveIsOpen.onChange(false)}
+      />
     </S.Container>
   )
 }

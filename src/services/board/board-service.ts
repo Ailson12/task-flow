@@ -11,7 +11,12 @@ const create = async (body: CreateBoard) => {
   await httpClient.post('board', body)
 }
 
+const remove = async (id: number) => {
+  await httpClient.delete(`board/${id}`)
+}
+
 export const boardService = {
   findAll,
   create,
+  remove,
 }

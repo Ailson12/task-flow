@@ -19,11 +19,13 @@ export const DialogWrapper = styled.dialog({
   },
 })
 
-export const DialogContent = styled.div({
+export const DialogContent = styled.div<{
+  $maxWidth?: number
+}>(({ $maxWidth = 550 }) => ({
   background: colors.c3,
   width: '100%',
-  maxWidth: 550,
+  maxWidth: $maxWidth,
   padding: '1rem',
   borderRadius: 4,
   border: `3px solid ${colors.c5}`,
-})
+}))
