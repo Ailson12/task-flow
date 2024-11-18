@@ -19,7 +19,12 @@ export const Dropdown: FC<DropdownProps> = ({ items }) => {
 
   return (
     <DropdownWrapper>
-      <DropdownBackground $isVisible={isVisible} onClick={onClose} />
+      <DropdownBackground
+        data-testid="bg-dropdown"
+        aria-hidden={!isVisible}
+        $isVisible={isVisible}
+        onClick={onClose}
+      />
 
       <button onClick={toggleVisible}>
         <img src={MoreVertIcon} alt="mais ações" height={28} width={28} />
