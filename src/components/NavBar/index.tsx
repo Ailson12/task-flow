@@ -2,6 +2,7 @@ import * as S from './styles'
 import { Text } from '../Text'
 import { Button } from '../Button'
 import { FC, useState } from 'react'
+import { Dropdown } from '../Dropdown'
 import MenuIcon from '@/assets/menu.svg?react'
 import { useBoardStore } from '@/store/board.store'
 import { AddNewTask } from './components/AddNewTask'
@@ -28,7 +29,11 @@ export const NavBar: FC = () => {
         </Text>
       </S.SidebarControl>
 
-      <Button onClick={() => setTaskOpen(true)}>Nova atividade</Button>
+      <div className="d-flex align-center gap-2">
+        <Button onClick={() => setTaskOpen(true)}>Nova atividade</Button>
+        <Dropdown items={['Excluir', 'Editar']} />
+      </div>
+
       <AddNewTask open={taskOpen} onClose={() => setTaskOpen(false)} />
     </S.Container>
   )
