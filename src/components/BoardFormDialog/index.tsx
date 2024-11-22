@@ -16,7 +16,9 @@ export const BoardFormDialog: FC<BoardFormDialogProps> = ({
   open,
   onClose,
 }) => {
-  const { formik, taskStatus } = useBoardFormDialog()
+  const { formik, taskStatus } = useBoardFormDialog({
+    onSuccess: onClose,
+  })
 
   return (
     <Dialog.Root open={open}>

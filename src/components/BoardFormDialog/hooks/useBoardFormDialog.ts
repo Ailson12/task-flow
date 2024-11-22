@@ -15,7 +15,11 @@ const initialValues = {
 
 type FormValues = typeof initialValues
 
-export const useBoardFormDialog = () => {
+type Params = {
+  onSuccess?: () => void
+}
+
+export const useBoardFormDialog = (params: Partial<Params> = {}) => {
   const queryClient = useQueryClient()
 
   const [taskStatusIds, setTaskStatusIds] = useState<number[]>([])
@@ -89,7 +93,7 @@ export const useBoardFormDialog = () => {
       })
       formik.resetForm()
       setTaskStatusIds([])
-      // onClose()
+      params.onSuccess?.()
       toast.success('Quadro cadastrado com sucesso!')
     } catch (error) {
       toast.error('Erro ao cadastrar quadro')
