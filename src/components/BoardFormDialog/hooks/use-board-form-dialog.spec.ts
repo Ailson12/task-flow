@@ -1,27 +1,16 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { useCreateNewBoard } from './use-create-new-board'
 import { setupWithDefaultProvider } from '@/helpers/setup-render'
 import { toast } from 'react-toastify'
+import { useBoardFormDialog } from './useBoardFormDialog'
 
 const setupRenderHook = () => {
-  return renderHook(useCreateNewBoard, {
+  return renderHook(useBoardFormDialog, {
     wrapper: ({ children }) => setupWithDefaultProvider(children),
   })
 }
 
-describe('useCreateNewBoard', () => {
-  it('should control the dialog open state', async () => {
-    const { result } = setupRenderHook()
-    expect(result.current.open).toBe(false)
-
-    await waitFor(result.current.onOpen)
-    expect(result.current.open).toBe(true)
-
-    await waitFor(result.current.onClose)
-    expect(result.current.open).toBe(false)
-  })
-
+describe('useBoardFormDialog', () => {
   it('should list the activity statuses', async () => {
     const { result } = setupRenderHook()
 
@@ -44,9 +33,7 @@ describe('useCreateNewBoard', () => {
 
     const firstOption = result.current.taskStatus.options[0]
 
-    await waitFor(() =>
-      result.current.setCurrentTaskStatusId(+firstOption.value)
-    )
+    await waitFor(() => result.current.taskStatus.onChange(+firstOption.value))
 
     await waitFor(result.current.taskStatus.addTaskStatus)
     expect(result.current.taskStatus.taskStatusSelected).toHaveLength(1)
@@ -74,9 +61,7 @@ describe('useCreateNewBoard', () => {
 
     const firstOption = result.current.taskStatus.options[0]
 
-    await waitFor(() =>
-      result.current.setCurrentTaskStatusId(+firstOption.value)
-    )
+    await waitFor(() => result.current.taskStatus.onChange(+firstOption.value))
 
     await waitFor(result.current.taskStatus.addTaskStatus)
 

@@ -18,6 +18,22 @@ const requests = [
       ] satisfies TaskStatus[]
     },
   },
+  {
+    url: `${import.meta.env.VITE_API_URL}task-status/all/board`,
+    method: 'findAllByBoard',
+    data: () => {
+      return [
+        {
+          id: 1,
+          title: 'Done',
+        },
+        {
+          id: 2,
+          title: 'Pending',
+        },
+      ] satisfies TaskStatus[]
+    },
+  },
 ]
 
 export const taskStatusServiceMock = requests.map((request) => {

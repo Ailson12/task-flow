@@ -1,12 +1,13 @@
+import { FC } from 'react'
 import * as S from './styles'
 import { Text } from '../Text'
 import { Button } from '../Button'
-import { FC } from 'react'
 import { Dropdown } from '../Dropdown'
+import { useNavbar } from './hooks/useNavbar'
 import MenuIcon from '@/assets/menu.svg?react'
 import { DialogConfirm } from '../DialogConfirm'
 import { AddNewTask } from './components/AddNewTask'
-import { useNavbar } from './hooks/useNavbar'
+import { BoardFormDialog } from '../BoardFormDialog'
 
 export const NavBar: FC = () => {
   const {
@@ -55,6 +56,8 @@ export const NavBar: FC = () => {
           />
         )}
       </div>
+
+      <BoardFormDialog open={false} onClose={console.log} />
 
       <AddNewTask
         open={taskOpen.value}

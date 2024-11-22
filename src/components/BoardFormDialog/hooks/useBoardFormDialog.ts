@@ -1,12 +1,12 @@
-import { OptionSelectType } from '@/components/Select'
-import { boardService } from '@/services/board/board-service'
-import { taskStatusService } from '@/services/task-status/task-status-service'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useFormik } from 'formik'
-import { useMemo, useState } from 'react'
-import { toast } from 'react-toastify'
-import { validationSchema } from '../components/CreateNewBoard/validation'
+import { validationSchema } from '../validation'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { boardService } from '@/services/board/board-service'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
+import { toast } from 'react-toastify'
+import { useMemo, useState } from 'react'
+import { taskStatusService } from '@/services/task-status/task-status-service'
+import { OptionSelectType } from '@/components/Select'
 
 const initialValues = {
   title: '',
@@ -15,47 +15,17 @@ const initialValues = {
 
 type FormValues = typeof initialValues
 
-export const useCreateNewBoard = () => {
+export const useBoardFormDialog = () => {
   const queryClient = useQueryClient()
 
-  const [open, setOpen] = useState(false)
   const [taskStatusIds, setTaskStatusIds] = useState<number[]>([])
   const [currentTaskStatusId, setCurrentTaskStatusId] = useState(0)
-
-  const onOpen = () => setOpen(true)
-  const onClose = () => setOpen(false)
 
   const formik = useFormik({
     initialValues,
     validationSchema: toFormikValidationSchema(validationSchema),
     onSubmit: (values) => handleSubmit(values),
   })
-
-  const handleSubmit = async (values: FormValues) => {
-    try {
-      if (!taskStatusIds.length) {
-        toast.warn('Adicione um status')
-        return null
-      }
-
-      const { description } = values
-      await boardService.create({
-        title: values.title,
-        description: description?.length ? description : null,
-        taskStatusIds,
-      })
-
-      queryClient.invalidateQueries({
-        queryKey: ['list-boards'],
-      })
-      formik.resetForm()
-      setTaskStatusIds([])
-      onClose()
-      toast.success('Quadro cadastrado com sucesso!')
-    } catch (error) {
-      toast.error('Erro ao cadastrar quadro')
-    }
-  }
 
   const { data: taskStatusList, isLoading } = useQuery({
     queryKey: ['list-task-status'],
@@ -100,13 +70,34 @@ export const useCreateNewBoard = () => {
     setTaskStatusIds(taskStatusIds.filter((value) => value !== id))
   }
 
+  const handleSubmit = async (values: FormValues) => {
+    try {
+      if (!taskStatusIds.length) {
+        toast.warn('Adicione um status')
+        return null
+      }
+
+      const { description } = values
+      await boardService.create({
+        title: values.title,
+        description: description?.length ? description : null,
+        taskStatusIds,
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ['list-boards'],
+      })
+      formik.resetForm()
+      setTaskStatusIds([])
+      // onClose()
+      toast.success('Quadro cadastrado com sucesso!')
+    } catch (error) {
+      toast.error('Erro ao cadastrar quadro')
+    }
+  }
+
   return {
-    open,
-    onOpen,
-    onClose,
     formik,
-    currentTaskStatusId,
-    setCurrentTaskStatusId,
     taskStatus: {
       isLoading,
       addTaskStatus,
