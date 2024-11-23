@@ -8,7 +8,7 @@ export const DialogWrapper = styled.dialog({
     border: 0,
     height: '100%',
     width: '100%',
-    zIndex: 10,
+    zIndex: 20,
     left: 0,
     top: 0,
     display: 'flex',

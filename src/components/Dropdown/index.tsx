@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, HTMLAttributes } from 'react'
 import MoreVertIcon from '@/assets/more-vert-icon.svg'
 import {
   DropdownBackground,
@@ -10,15 +10,16 @@ import { DropdownItem, useDropdown } from './hooks/useDropdown'
 
 type DropdownProps = {
   items: DropdownItem[]
+  wrapperProps?: HTMLAttributes<HTMLDivElement>
 }
 
-export const Dropdown: FC<DropdownProps> = ({ items }) => {
+export const Dropdown: FC<DropdownProps> = ({ items, wrapperProps }) => {
   const { listIsOpen, isVisible, toggleVisible, onClose } = useDropdown({
     items,
   })
 
   return (
-    <DropdownWrapper>
+    <DropdownWrapper {...wrapperProps}>
       <DropdownBackground
         data-testid="bg-dropdown"
         aria-hidden={!isVisible}

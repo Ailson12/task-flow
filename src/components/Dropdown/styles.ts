@@ -21,7 +21,7 @@ export const DropdownList = styled.ul({
   display: 'flex',
   right: 0,
   flexDirection: 'column',
-  zIndex: 10,
+  zIndex: 15,
   top: 'calc(100% + 4px)',
   background: colors.c3,
   minWidth: pxToRem(100),

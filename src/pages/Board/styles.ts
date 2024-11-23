@@ -51,8 +51,11 @@ export const TaskContainer = styled.div({
 })
 
 export const Card = styled.div({
-  background: colors.c3,
-  padding: '1rem',
-  borderRadius: 6,
   width: 250,
+  padding: '1rem',
+  display: 'flex',
+  borderRadius: 6,
+  alignItems: 'center',
+  background: colors.c3,
+  justifyContent: 'space-between',
 })

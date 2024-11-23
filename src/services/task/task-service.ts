@@ -8,6 +8,10 @@ const create = (body: CreateTask) => {
   return httpClient.post(baseUrl, body)
 }
 
+const remove = async (id: number) => {
+  await httpClient.delete(`${baseUrl}/${id}`)
+}
+
 const findAllByBoard = async (params: FindTaskByBoardParams) => {
   const response = await httpClient.get<Task[]>(`${baseUrl}/board`, {
     params,
@@ -18,5 +22,6 @@ const findAllByBoard = async (params: FindTaskByBoardParams) => {
 
 export const taskService = {
   create,
+  remove,
   findAllByBoard,
 }
