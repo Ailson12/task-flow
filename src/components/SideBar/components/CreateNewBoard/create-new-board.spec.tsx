@@ -221,6 +221,6 @@ describe('<CreateNewBoard />', () => {
     await clickSaveButton()
 
     expect(toastMock).toHaveBeenCalledTimes(1)
-    expect(toastMock).toHaveBeenCalledWith('Quadro cadastrado com sucesso!')
+    expect(toastMock).toHaveBeenCalledWith('Quadro salvo com sucesso!')
   })
 })

@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useBoardStore } from '@/store/board.store'
 import { useSidebarStore } from '@/store/sidebar.store'
@@ -8,7 +8,7 @@ export const useSideBar = () => {
   const { open, toggleOpen } = useSidebarStore()
   const { boardSelected, setBoardSelected } = useBoardStore()
 
-  const { data, isSuccess, isLoading } = useQuery({
+  const { data, isSuccess, isFetching, isLoading } = useQuery({
     queryKey: ['list-boards'],
     queryFn: boardService.findAll,
   })
@@ -27,6 +27,14 @@ export const useSideBar = () => {
   }
 
   const activeBoardId = useMemo(() => boardSelected?.id ?? 0, [boardSelected])
+
+  useEffect(() => {
+    if (isFetching) return
+
+    const firstBoard = data?.at(0)
+    const board = findBoardById(boardSelected?.id ?? 0)
+    setBoardSelected(board ?? firstBoard ?? null)
+  }, [data, isFetching])
 
   return {
     open,

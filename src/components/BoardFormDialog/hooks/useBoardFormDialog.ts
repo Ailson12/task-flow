@@ -1,12 +1,13 @@
 import { useFormik } from 'formik'
+import { Board } from '@/types/board'
+import { toast } from 'react-toastify'
+import { useEffect, useMemo, useState } from 'react'
 import { validationSchema } from '../validation'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { OptionSelectType } from '@/components/Select'
 import { boardService } from '@/services/board/board-service'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
-import { toast } from 'react-toastify'
-import { useMemo, useState } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { taskStatusService } from '@/services/task-status/task-status-service'
-import { OptionSelectType } from '@/components/Select'
 
 const initialValues = {
   title: '',
@@ -16,6 +17,7 @@ const initialValues = {
 type FormValues = typeof initialValues
 
 type Params = {
+  board: Board | null
   onSuccess?: () => void
 }
 
@@ -25,8 +27,18 @@ export const useBoardFormDialog = (params: Partial<Params> = {}) => {
   const [taskStatusIds, setTaskStatusIds] = useState<number[]>([])
   const [currentTaskStatusId, setCurrentTaskStatusId] = useState(0)
 
+  useEffect(() => {
+    if (params.board?.taskStatusList?.length) {
+      const ids = params.board.taskStatusList.map(({ id }) => id)
+      setTaskStatusIds(ids)
+    }
+  }, [params.board?.taskStatusList])
+
   const formik = useFormik({
-    initialValues,
+    initialValues: {
+      title: params.board?.title ?? initialValues.title,
+      description: params.board?.description ?? initialValues.description,
+    },
     validationSchema: toFormikValidationSchema(validationSchema),
     onSubmit: (values) => handleSubmit(values),
   })
@@ -82,11 +94,14 @@ export const useBoardFormDialog = (params: Partial<Params> = {}) => {
       }
 
       const { description } = values
-      await boardService.create({
-        title: values.title,
-        description: description?.length ? description : null,
-        taskStatusIds,
-      })
+      await boardService.updateOrCreate(
+        {
+          title: values.title,
+          description: description?.length ? description : null,
+          taskStatusIds,
+        },
+        params.board?.id
+      )
 
       queryClient.invalidateQueries({
         queryKey: ['list-boards'],
@@ -94,9 +109,9 @@ export const useBoardFormDialog = (params: Partial<Params> = {}) => {
       formik.resetForm()
       setTaskStatusIds([])
       params.onSuccess?.()
-      toast.success('Quadro cadastrado com sucesso!')
+      toast.success('Quadro salvo com sucesso!')
     } catch (error) {
-      toast.error('Erro ao cadastrar quadro')
+      toast.error('Erro ao salvar quadro')
     }
   }
 

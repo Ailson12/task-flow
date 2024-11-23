@@ -4,25 +4,32 @@ import { Input } from '../Input'
 import { Button } from '../Button'
 import { Dialog } from '../Dialog'
 import { Select } from '../Select'
+import { Board } from '@/types/board'
 import { TextArea } from '../TextArea'
 import { useBoardFormDialog } from './hooks/useBoardFormDialog'
 
 type BoardFormDialogProps = {
   open: boolean
   onClose(): void
+  board: Board | null
 }
 
 export const BoardFormDialog: FC<BoardFormDialogProps> = ({
   open,
+  board,
   onClose,
 }) => {
   const { formik, taskStatus } = useBoardFormDialog({
+    board,
     onSuccess: onClose,
   })
 
   return (
     <Dialog.Root open={open}>
-      <Dialog.Header title="Adicionar novo quadro" onClose={onClose} />
+      <Dialog.Header
+        title={`${board ? 'Atualizar' : 'Adicionar novo'} quadro`}
+        onClose={onClose}
+      />
 
       <form onSubmit={formik.handleSubmit} className="d-flex flex-column gap-2">
         <Input

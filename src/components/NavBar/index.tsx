@@ -12,6 +12,7 @@ import { BoardFormDialog } from '../BoardFormDialog'
 export const NavBar: FC = () => {
   const {
     taskOpen,
+    boardOpen,
     toggleOpen,
     boardSelected,
     removeBoardSelected,
@@ -48,8 +49,8 @@ export const NavBar: FC = () => {
               {
                 key: 'board-edit',
                 label: 'Editar',
-                onClick: (row) => {
-                  console.log('edti', row)
+                onClick() {
+                  boardOpen.onChange(true)
                 },
               },
             ]}
@@ -57,12 +58,20 @@ export const NavBar: FC = () => {
         )}
       </div>
 
-      <BoardFormDialog open={false} onClose={console.log} />
+      {boardOpen.value && (
+        <BoardFormDialog
+          open={boardOpen.value}
+          board={boardSelected}
+          onClose={() => boardOpen.onChange(false)}
+        />
+      )}
 
-      <AddNewTask
-        open={taskOpen.value}
-        onClose={() => taskOpen.onChange(false)}
-      />
+      {taskOpen.value && (
+        <AddNewTask
+          open={taskOpen.value}
+          onClose={() => taskOpen.onChange(false)}
+        />
+      )}
 
       <DialogConfirm
         onConfirm={removeBoardSelected}

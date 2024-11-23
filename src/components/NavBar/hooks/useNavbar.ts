@@ -1,9 +1,9 @@
-import { boardService } from '@/services/board/board-service'
-import { useBoardStore } from '@/store/board.store'
-import { useSidebarStore } from '@/store/sidebar.store'
-import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
+import { useBoardStore } from '@/store/board.store'
+import { useQueryClient } from '@tanstack/react-query'
+import { useSidebarStore } from '@/store/sidebar.store'
+import { boardService } from '@/services/board/board-service'
 
 export const useNavbar = () => {
   const queryClient = useQueryClient()
@@ -11,6 +11,7 @@ export const useNavbar = () => {
   const { boardSelected, setBoardSelected } = useBoardStore()
 
   const [taskOpen, setTaskOpen] = useState(false)
+  const [boardOpen, setBoardOpen] = useState(false)
   const [confirmRemoveIsOpen, setConfirmRemoveIsOpen] = useState(false)
 
   const removeBoardSelected = async () => {
@@ -33,6 +34,10 @@ export const useNavbar = () => {
     taskOpen: {
       value: taskOpen,
       onChange: setTaskOpen,
+    },
+    boardOpen: {
+      value: boardOpen,
+      onChange: setBoardOpen,
     },
     boardSelected,
     removeBoardSelected,
