@@ -67,13 +67,12 @@ export const Board: FC = () => {
     const sourceIndex = tasksGroupedByStatus.findIndex(
       (task) => task.id === source.id
     )
-    tasksGroupedByStatus.splice(sourceIndex, 1)
-
-    const targetIndex = copyObject<Task[]>(tasksGroupedByStatus).findIndex(
+    const targetIndex = tasksGroupedByStatus.findIndex(
       (task) => task.id === target.id
     )
 
-    tasksGroupedByStatus.splice(targetIndex, 0, source)
+    const [removedTask] = tasksGroupedByStatus.splice(sourceIndex, 1)
+    tasksGroupedByStatus.splice(targetIndex, 0, removedTask)
 
     tasksGroupedByStatus.forEach((task, index) => {
       task.order = index + 1
