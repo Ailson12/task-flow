@@ -2,7 +2,7 @@ import { toast } from 'react-toastify'
 import { Task, TaskGrouped } from '@/types/task'
 import { TaskStatus } from '@/types/task-status'
 import { useBoardStore } from '@/store/board.store'
-import { useEffect, useMemo, useState } from 'react'
+import { DragEventHandler, useEffect, useMemo, useState } from 'react'
 import { generateUUID } from '@/helpers/generate-uuid'
 import { taskService } from '@/services/task/task-service'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -82,9 +82,102 @@ export const useBoard = () => {
     })
   }
 
+  const onDragStart: DragEventHandler<HTMLDivElement> = (event) => {
+    const id = event.currentTarget.dataset?.id
+    if (id) {
+      event.dataTransfer.setData('text/plain', id)
+    }
+  }
+
+  const onDragOver: DragEventHandler<HTMLDivElement> = (event) => {
+    event.preventDefault()
+    event.dataTransfer.dropEffect = 'move'
+  }
+
+  const onDrop: DragEventHandler<HTMLDivElement> = (event) => {
+    event.preventDefault()
+
+    const sourceId = event.dataTransfer.getData('text/plain')
+    const targetId = event.currentTarget.dataset?.id
+
+    if (sourceId && targetId) {
+      reorderTasks(parseInt(sourceId), parseInt(targetId))
+    }
+  }
+
+  const reorderTasks = (sourceId: number, targetId: number) => {
+    const source = findTaskById(sourceId)
+    const target = findTaskById(targetId)
+
+    if (!source || !target) return
+
+    const hasSameStatus = source?.taskStatus.id === target?.taskStatus.id
+    if (hasSameStatus) {
+      reorderTasksWithSameStatus(source, target)
+    }
+  }
+
+  const reorderTasksWithSameStatus = (source: Task, target: Task) => {
+    const tasksGroupedByStatus = copyObject<Task[]>(
+      tasks
+        ?.filter((task) => task.taskStatus.id === source.taskStatus.id)
+        .sort((a, b) => a.order - b.order)
+    )
+
+    const sourceIndex = tasksGroupedByStatus.findIndex(
+      (task) => task.id === source.id
+    )
+    const targetIndex = tasksGroupedByStatus.findIndex(
+      (task) => task.id === target.id
+    )
+
+    const [removedTask] = tasksGroupedByStatus.splice(sourceIndex, 1)
+    tasksGroupedByStatus.splice(targetIndex, 0, removedTask)
+
+    tasksGroupedByStatus.forEach((task, index) => {
+      task.order = index + 1
+    })
+
+    const updatedTasks = tasks
+      .filter((task) => task.taskStatus.id !== source.taskStatus.id)
+      .concat(tasksGroupedByStatus)
+
+    setTasks(updatedTasks)
+    updateOrder(updatedTasks)
+  }
+
+  const findTaskById = (id: number) => {
+    return (tasks ?? [])?.find((task) => task.id === id)
+  }
+
+  const copyObject = function <T = unknown>(value: unknown) {
+    return JSON.parse(JSON.stringify(value)) as T
+  }
+
+  const updateOrder = (updatedTasks: Task[]) => {
+    toast.promise(
+      taskService.updateOrder({
+        tasks: updatedTasks.map((row) => ({
+          taskId: row.id,
+          order: row.order ?? 0,
+        })),
+      }),
+      {
+        error: 'Erro ao atualizar ordem.',
+        success: 'Ordem atualizada com sucesso!',
+        pending: 'Atualizando...',
+      }
+    )
+  }
+
+  const draggable = {
+    onDrop,
+    onDragOver,
+    onDragStart,
+  }
+
   return {
-    tasks,
-    setTasks,
+    draggable,
     tasksFormatted,
     taskSelectedEdit,
     removeTaskSelected,
