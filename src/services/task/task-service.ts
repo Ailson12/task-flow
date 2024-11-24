@@ -1,6 +1,10 @@
-import { httpClient } from '@/configs/api'
-import { CreateTask, FindTaskByBoardParams } from './task-service.type'
+import {
+  CreateTask,
+  TaskOrderBody,
+  FindTaskByBoardParams,
+} from './task-service.type'
 import { Task } from '@/types/task'
+import { httpClient } from '@/configs/api'
 
 const baseUrl = 'task'
 
@@ -10,6 +14,10 @@ const create = (body: CreateTask) => {
 
 const update = (id: number, body: CreateTask) => {
   return httpClient.put(`${baseUrl}/${id}`, body)
+}
+
+const updateOrder = async (body: TaskOrderBody) => {
+  return await httpClient.put(`${baseUrl}/update-order`, body)
 }
 
 const remove = async (id: number) => {
@@ -32,6 +40,7 @@ export const taskService = {
   create,
   remove,
   update,
+  updateOrder,
   updateOrCreate,
   findAllByBoard,
 }

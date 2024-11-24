@@ -50,12 +50,15 @@ export const TaskContainer = styled.div({
   paddingBottom: '1rem',
 })
 
-export const Card = styled.div({
+export const Card = styled.div<{
+  $order?: number
+}>(({ $order }) => ({
   width: 250,
+  order: $order,
   padding: '1rem',
   display: 'flex',
   borderRadius: 6,
   alignItems: 'center',
   background: colors.c3,
   justifyContent: 'space-between',
-})
+}))

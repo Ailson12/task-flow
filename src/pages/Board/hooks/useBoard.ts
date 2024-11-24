@@ -1,8 +1,8 @@
 import { toast } from 'react-toastify'
-import { useMemo, useState } from 'react'
 import { Task, TaskGrouped } from '@/types/task'
 import { TaskStatus } from '@/types/task-status'
 import { useBoardStore } from '@/store/board.store'
+import { useEffect, useMemo, useState } from 'react'
 import { generateUUID } from '@/helpers/generate-uuid'
 import { taskService } from '@/services/task/task-service'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -12,12 +12,13 @@ export const useBoard = () => {
   const queryClient = useQueryClient()
   const { boardSelected } = useBoardStore()
 
+  const [tasks, setTasks] = useState<Task[]>([])
   const [taskSelectedRemoved, setTaskSelectedRemoved] = useState<Task | null>(
     null
   )
   const [taskSelectedEdit, setTaskSelectedEdit] = useState<Task | null>(null)
 
-  const { data: tasks } = useQuery({
+  const { data: dataTasks } = useQuery({
     queryKey: ['list-tasks', boardSelected?.id],
     queryFn: () => {
       return taskService.findAllByBoard({
@@ -35,6 +36,10 @@ export const useBoard = () => {
       }),
     enabled: Boolean(boardSelected?.id),
   })
+
+  useEffect(() => {
+    setTasks(dataTasks ?? [])
+  }, [dataTasks])
 
   const getColorByStatus = (taskStatus: TaskStatus) => {
     const colors = new Map<string, string>([
@@ -78,6 +83,8 @@ export const useBoard = () => {
   }
 
   return {
+    tasks,
+    setTasks,
     tasksFormatted,
     taskSelectedEdit,
     removeTaskSelected,

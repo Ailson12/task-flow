@@ -6,6 +6,13 @@ export type CreateTask = {
   boardId: number
 }
 
+export type TaskOrderBody = {
+  tasks: Array<{
+    order: number
+    taskId: number
+  }>
+}
+
 export type FindTaskByBoardParams = {
   boardId: number
 }
