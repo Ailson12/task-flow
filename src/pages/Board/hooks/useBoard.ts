@@ -12,10 +12,10 @@ export const useBoard = () => {
   const queryClient = useQueryClient()
   const { boardSelected } = useBoardStore()
 
-  const [taskOpen, setTaskOpen] = useState(false)
   const [taskSelectedRemoved, setTaskSelectedRemoved] = useState<Task | null>(
     null
   )
+  const [taskSelectedEdit, setTaskSelectedEdit] = useState<Task | null>(null)
 
   const { data: tasks } = useQuery({
     queryKey: ['list-tasks', boardSelected?.id],
@@ -79,11 +79,9 @@ export const useBoard = () => {
 
   return {
     tasksFormatted,
-    taskOpen: {
-      value: taskOpen,
-      onChange: setTaskOpen,
-    },
+    taskSelectedEdit,
     removeTaskSelected,
+    setTaskSelectedEdit,
     taskSelectedRemoved,
     setTaskSelectedRemoved,
   }

@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { Task } from '@/types/task'
 import { Input } from '@/components/Input'
 import { Dialog } from '@/components/Dialog'
 import { Select } from '@/components/Select'
@@ -9,10 +10,12 @@ import { useAddNewTask } from '../../hooks/use-add-new-task'
 type AddNewTaskProps = {
   open: boolean
   onClose(): void
+  task?: Task | null
 }
 
-export const AddNewTask: FC<AddNewTaskProps> = ({ open, onClose }) => {
+export const AddNewTask: FC<AddNewTaskProps> = ({ open, task, onClose }) => {
   const { formik, taskStatus } = useAddNewTask({
+    task,
     onClose,
   })
 
@@ -51,7 +54,7 @@ export const AddNewTask: FC<AddNewTaskProps> = ({ open, onClose }) => {
           }}
         />
 
-        <Button type="submit">Criar atividade</Button>
+        <Button type="submit">Salvar</Button>
       </form>
     </Dialog.Root>
   )

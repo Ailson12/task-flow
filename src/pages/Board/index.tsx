@@ -9,10 +9,11 @@ import { DialogConfirm } from '@/components/DialogConfirm'
 
 export const Board: FC = () => {
   const {
-    taskOpen,
     tasksFormatted,
+    taskSelectedEdit,
     removeTaskSelected,
     taskSelectedRemoved,
+    setTaskSelectedEdit,
     setTaskSelectedRemoved,
   } = useBoard()
 
@@ -62,7 +63,7 @@ export const Board: FC = () => {
                             key: 'board-edit',
                             label: 'Editar',
                             onClick() {
-                              // boardOpen.onChange(true)
+                              setTaskSelectedEdit(task)
                             },
                           },
                         ]}
@@ -82,10 +83,11 @@ export const Board: FC = () => {
         onClose={() => setTaskSelectedRemoved(null)}
       />
 
-      {taskOpen.value && (
+      {Boolean(taskSelectedEdit) && (
         <AddNewTask
-          open={taskOpen.value}
-          onClose={() => taskOpen.onChange(false)}
+          task={taskSelectedEdit}
+          open={Boolean(taskSelectedEdit)}
+          onClose={() => setTaskSelectedEdit(null)}
         />
       )}
     </>
