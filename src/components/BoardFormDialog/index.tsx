@@ -11,7 +11,7 @@ import { useBoardFormDialog } from './hooks/useBoardFormDialog'
 type BoardFormDialogProps = {
   open: boolean
   onClose(): void
-  board: Board | null
+  board?: Board | null
 }
 
 export const BoardFormDialog: FC<BoardFormDialogProps> = ({

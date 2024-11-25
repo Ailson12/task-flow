@@ -11,10 +11,12 @@ const requests = [
       return [
         {
           id: 1,
+          taskStatusList: [],
           title: 'Marketing',
         },
         {
           id: 2,
+          taskStatusList: [],
           title: 'RoadMap',
         },
       ] satisfies Board[]

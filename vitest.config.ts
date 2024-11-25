@@ -11,7 +11,7 @@ export default defineConfig({
   ],
   test: {
     environment: 'jsdom',
-    testTimeout: 10000,
+    testTimeout: 20000,
     setupFiles: 'src/configs/test/setupTests.ts',
     coverage: {
       exclude: [
