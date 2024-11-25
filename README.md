@@ -29,7 +29,7 @@ Os usuários devem ser capazes de:
 
 ### Captura de tela
 
-<img src="./public/print-project.PNG" alt="print project" height="400" width="auto" />
+<img src="./public/print-project.png" alt="print project" height="400" width="auto" />
 
 ### Instalação
 
