@@ -4,6 +4,7 @@ import { Text } from '@/components/Text'
 import { colors } from '@/styles/colors'
 import { useBoard } from './hooks/useBoard'
 import { Dropdown } from '@/components/Dropdown'
+import { ViewTask } from './components/ViewTask'
 import { DialogConfirm } from '@/components/DialogConfirm'
 import { AddNewTask } from '@/components/NavBar/components/AddNewTask'
 
@@ -12,9 +13,11 @@ export const Board: FC = () => {
     draggable,
     tasksFormatted,
     taskSelectedEdit,
+    taskSelectedView,
     removeTaskSelected,
     taskSelectedRemoved,
     setTaskSelectedEdit,
+    setTaskSelectedView,
     setTaskSelectedRemoved,
   } = useBoard()
 
@@ -56,6 +59,7 @@ export const Board: FC = () => {
                       onDragEnd={draggable.onDragEnd}
                       onDragOver={draggable.onDragOver}
                       onDragStart={draggable.onDragStart}
+                      onClick={() => setTaskSelectedView(task)}
                     >
                       <Text weight={500} size={14}>
                         {`${title}${hasSuffix ? '...' : ''}`}
@@ -91,6 +95,14 @@ export const Board: FC = () => {
           ))}
         </S.Container>
       </S.Wrapper>
+
+      {taskSelectedView && (
+        <ViewTask
+          open={true}
+          task={taskSelectedView}
+          onClose={() => setTaskSelectedView(null)}
+        />
+      )}
 
       <DialogConfirm
         onConfirm={removeTaskSelected}

@@ -1,6 +1,11 @@
 import { FC, ReactNode } from 'react'
 import * as S from './styles'
 
+export type DialogDefaultProps = {
+  open: boolean
+  onClose(): void
+}
+
 export type DialogRootProps = {
   open: boolean
   children: ReactNode

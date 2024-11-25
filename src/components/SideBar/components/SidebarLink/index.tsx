@@ -28,7 +28,7 @@ export const SidebarLink: FC<SidebarLinkProps> = ({
   return (
     <S.Container $isActive={isActive} onClick={onClick}>
       <BoardIcon
-        style={{ minWidth: 22 }}
+        style={{ minWidth: 22, marginTop: 3 }}
         height={22}
         width={22}
         fill={currentColor}

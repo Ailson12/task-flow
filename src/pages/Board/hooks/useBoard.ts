@@ -18,6 +18,7 @@ export const useBoard = () => {
     null
   )
   const [taskSelectedEdit, setTaskSelectedEdit] = useState<Task | null>(null)
+  const [taskSelectedView, setTaskSelectedView] = useState<Task | null>(null)
 
   const { data: dataTasks } = useQuery({
     queryKey: ['list-tasks', boardSelected?.id],
@@ -271,7 +272,9 @@ export const useBoard = () => {
     draggable,
     tasksFormatted,
     taskSelectedEdit,
+    taskSelectedView,
     removeTaskSelected,
+    setTaskSelectedView,
     setTaskSelectedEdit,
     taskSelectedRemoved,
     setTaskSelectedRemoved,
