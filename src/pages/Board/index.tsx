@@ -23,7 +23,7 @@ export const Board: FC = () => {
       <S.Wrapper>
         <S.Container>
           {tasksFormatted.map((row) => (
-            <div key={row.id}>
+            <div key={row.id} className="d-flex flex-column">
               <S.StatusContainer>
                 <S.StatusIndicator $bgColor={row.color} />
                 <Text
@@ -36,23 +36,24 @@ export const Board: FC = () => {
                 </Text>
               </S.StatusContainer>
 
-              <S.TaskContainer>
+              <S.TaskContainer $isDraggable={draggable.isDraggable}>
                 {row.tasks.map((task) => {
                   const title = task.title.slice(0, 60)
                   const hasSuffix = task.title.length > 60
 
                   return (
                     <S.Card
-                      onDrop={draggable.onDrop}
                       draggable={true}
                       key={task.title}
                       data-id={task.id}
                       $order={task.order}
+                      onDrop={draggable.onDrop}
+                      onDragEnd={draggable.onDragEnd}
                       onDragOver={draggable.onDragOver}
                       onDragStart={draggable.onDragStart}
                     >
                       <Text weight={500} size={14}>
-                        {`${title}${hasSuffix ? '...' : ''}`}- {task.order}
+                        {`${title}${hasSuffix ? '...' : ''}`}
                       </Text>
                       <Dropdown
                         wrapperProps={{

@@ -10,6 +10,7 @@ export type TaskOrderBody = {
   tasks: Array<{
     order: number
     taskId: number
+    taskStatusId: number
   }>
 }
 

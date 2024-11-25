@@ -43,12 +43,22 @@ export const StatusIndicator = styled.div<{
   })
 )
 
-export const TaskContainer = styled.div({
-  display: 'flex',
-  gap: '1rem',
-  flexDirection: 'column',
-  paddingBottom: '1rem',
-})
+export const TaskContainer = styled.div<{
+  $isDraggable?: boolean
+}>(
+  {
+    display: 'flex',
+    gap: '1rem',
+    flex: 1,
+    flexDirection: 'column',
+    paddingBottom: '1rem',
+  },
+  ({ $isDraggable = false }) => ({
+    ...($isDraggable && {
+      background: '#262633',
+    }),
+  })
+)
 
 export const Card = styled.div<{
   $order?: number

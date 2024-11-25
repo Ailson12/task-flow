@@ -12,6 +12,7 @@ export const useBoard = () => {
   const queryClient = useQueryClient()
   const { boardSelected } = useBoardStore()
 
+  const [isDraggable, setIsDraggable] = useState(false)
   const [tasks, setTasks] = useState<Task[]>([])
   const [taskSelectedRemoved, setTaskSelectedRemoved] = useState<Task | null>(
     null
@@ -85,6 +86,7 @@ export const useBoard = () => {
   const onDragStart: DragEventHandler<HTMLDivElement> = (event) => {
     const id = event.currentTarget.dataset?.id
     if (id) {
+      setIsDraggable(true)
       event.dataTransfer.setData('text/plain', id)
     }
   }
@@ -92,6 +94,11 @@ export const useBoard = () => {
   const onDragOver: DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault()
     event.dataTransfer.dropEffect = 'move'
+  }
+
+  const onDragEnd: DragEventHandler<HTMLDivElement> = (event) => {
+    event.preventDefault()
+    setIsDraggable(false)
   }
 
   const onDrop: DragEventHandler<HTMLDivElement> = (event) => {
@@ -102,6 +109,7 @@ export const useBoard = () => {
 
     if (sourceId && targetId) {
       reorderTasks(parseInt(sourceId), parseInt(targetId))
+      setIsDraggable(false)
     }
   }
 
@@ -114,7 +122,40 @@ export const useBoard = () => {
     const hasSameStatus = source?.taskStatus.id === target?.taskStatus.id
     if (hasSameStatus) {
       reorderTasksWithSameStatus(source, target)
+    } else {
+      reorderTasksWithDifferentStatus(source, target)
     }
+  }
+
+  const reorderTasksWithDifferentStatus = (source: Task, target: Task) => {
+    const tasksGroupedByStatus = copyObject<Task[]>(
+      tasks
+        ?.filter((task) => task.taskStatus.id === target.taskStatus.id)
+        .sort((a, b) => a.order - b.order)
+    )
+
+    const targetIndex = tasksGroupedByStatus.findIndex((task) => {
+      return task.id === target.id
+    })
+
+    tasksGroupedByStatus.splice(targetIndex, 0, {
+      ...source,
+      taskStatus: target.taskStatus,
+    })
+
+    tasksGroupedByStatus.forEach((task, index) => {
+      task.order = index + 1
+    })
+
+    const updatedTasks = tasks
+      .filter(
+        (task) =>
+          task.taskStatus.id !== target.taskStatus.id && source.id !== task.id
+      )
+      .concat(tasksGroupedByStatus)
+
+    setTasks(updatedTasks)
+    updateOrder(tasksGroupedByStatus)
   }
 
   const reorderTasksWithSameStatus = (source: Task, target: Task) => {
@@ -143,7 +184,7 @@ export const useBoard = () => {
       .concat(tasksGroupedByStatus)
 
     setTasks(updatedTasks)
-    updateOrder(updatedTasks)
+    updateOrder(tasksGroupedByStatus)
   }
 
   const findTaskById = (id: number) => {
@@ -160,6 +201,7 @@ export const useBoard = () => {
         tasks: updatedTasks.map((row) => ({
           taskId: row.id,
           order: row.order ?? 0,
+          taskStatusId: row.taskStatus.id,
         })),
       }),
       {
@@ -172,7 +214,9 @@ export const useBoard = () => {
 
   const draggable = {
     onDrop,
+    onDragEnd,
     onDragOver,
+    isDraggable,
     onDragStart,
   }
 
