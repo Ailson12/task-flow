@@ -36,7 +36,12 @@ export const Board: FC = () => {
                 </Text>
               </S.StatusContainer>
 
-              <S.TaskContainer $isDraggable={draggable.isDraggable}>
+              <S.TaskContainer
+                onDrop={draggable.onDropDropzone}
+                onDragOver={draggable.onDragOverDropzone}
+                $isDraggable={draggable.isDraggable}
+                data-status={row.status.id}
+              >
                 {row.tasks.map((task) => {
                   const title = task.title.slice(0, 60)
                   const hasSuffix = task.title.length > 60

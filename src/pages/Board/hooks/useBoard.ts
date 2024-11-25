@@ -103,6 +103,7 @@ export const useBoard = () => {
 
   const onDrop: DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault()
+    event.stopPropagation()
 
     const sourceId = event.dataTransfer.getData('text/plain')
     const targetId = event.currentTarget.dataset?.id
@@ -127,12 +128,16 @@ export const useBoard = () => {
     }
   }
 
-  const reorderTasksWithDifferentStatus = (source: Task, target: Task) => {
-    const tasksGroupedByStatus = copyObject<Task[]>(
+  const getTasksGroupedByStatus = (taskStatus: TaskStatus) => {
+    return copyObject<Task[]>(
       tasks
-        ?.filter((task) => task.taskStatus.id === target.taskStatus.id)
+        ?.filter((task) => task.taskStatus.id === taskStatus.id)
         .sort((a, b) => a.order - b.order)
     )
+  }
+
+  const reorderTasksWithDifferentStatus = (source: Task, target: Task) => {
+    const tasksGroupedByStatus = getTasksGroupedByStatus(target.taskStatus)
 
     const targetIndex = tasksGroupedByStatus.findIndex((task) => {
       return task.id === target.id
@@ -159,11 +164,7 @@ export const useBoard = () => {
   }
 
   const reorderTasksWithSameStatus = (source: Task, target: Task) => {
-    const tasksGroupedByStatus = copyObject<Task[]>(
-      tasks
-        ?.filter((task) => task.taskStatus.id === source.taskStatus.id)
-        .sort((a, b) => a.order - b.order)
-    )
+    const tasksGroupedByStatus = getTasksGroupedByStatus(source.taskStatus)
 
     const sourceIndex = tasksGroupedByStatus.findIndex(
       (task) => task.id === source.id
@@ -191,6 +192,10 @@ export const useBoard = () => {
     return (tasks ?? [])?.find((task) => task.id === id)
   }
 
+  const findTaskStatusById = (id: number) => {
+    return (tasksStatus ?? [])?.find((taskStatus) => taskStatus.id === id)
+  }
+
   const copyObject = function <T = unknown>(value: unknown) {
     return JSON.parse(JSON.stringify(value)) as T
   }
@@ -212,12 +217,42 @@ export const useBoard = () => {
     )
   }
 
+  const onDropDropzone: DragEventHandler<HTMLDivElement> = (event) => {
+    event.preventDefault()
+
+    const sourceId = event.dataTransfer.getData('text/plain')
+    const statusId = event.currentTarget.dataset?.status
+
+    const source = sourceId ? findTaskById(+sourceId) : null
+    const status = statusId ? findTaskStatusById(+statusId) : null
+
+    if (status && source) {
+      source.taskStatus = status
+      const tasksGroupedByStatus = getTasksGroupedByStatus(status)
+      source.order = tasksGroupedByStatus.length + 1
+
+      tasksGroupedByStatus.forEach((task, index) => {
+        task.order = index + 1
+      })
+
+      setTasks([...tasks])
+      updateOrder(tasksGroupedByStatus)
+    }
+  }
+
+  const onDragOverDropzone: DragEventHandler<HTMLDivElement> = (event) => {
+    event.preventDefault()
+    event.dataTransfer.dropEffect = 'move'
+  }
+
   const draggable = {
     onDrop,
     onDragEnd,
     onDragOver,
     isDraggable,
     onDragStart,
+    onDropDropzone,
+    onDragOverDropzone,
   }
 
   return {

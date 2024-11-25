@@ -67,6 +67,7 @@ export const Card = styled.div<{
   order: $order,
   padding: '1rem',
   display: 'flex',
+  cursor: 'move',
   borderRadius: 6,
   alignItems: 'center',
   background: colors.c3,
