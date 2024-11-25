@@ -31,6 +31,13 @@ Os usuários devem ser capazes de:
 
 <img src="./public/print-project.png" alt="print project" height="400" width="auto" />
 
+### Configurar a API
+
+- Veja o repositório
+```
+  https://github.com/Ailson12/task-flow-api
+```
+
 ### Instalação
 
 - Realizar clone do projeto
