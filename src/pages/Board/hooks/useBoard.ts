@@ -136,6 +136,13 @@ export const useBoard = () => {
     )
   }
 
+  const updateTaskOrder = (tasks: Task[]) => {
+    return tasks.map((task, index) => ({
+      ...task,
+      order: index + 1,
+    }))
+  }
+
   const reorderTasksWithDifferentStatus = (source: Task, target: Task) => {
     const tasksGroupedByStatus = getTasksGroupedByStatus(target.taskStatus)
 
@@ -148,19 +155,17 @@ export const useBoard = () => {
       taskStatus: target.taskStatus,
     })
 
-    tasksGroupedByStatus.forEach((task, index) => {
-      task.order = index + 1
-    })
+    const reorderedTasks = updateTaskOrder(tasksGroupedByStatus)
 
     const updatedTasks = tasks
       .filter(
         (task) =>
           task.taskStatus.id !== target.taskStatus.id && source.id !== task.id
       )
-      .concat(tasksGroupedByStatus)
+      .concat(reorderedTasks)
 
     setTasks(updatedTasks)
-    updateOrder(tasksGroupedByStatus)
+    updateOrder(reorderedTasks)
   }
 
   const reorderTasksWithSameStatus = (source: Task, target: Task) => {
@@ -176,16 +181,14 @@ export const useBoard = () => {
     const [removedTask] = tasksGroupedByStatus.splice(sourceIndex, 1)
     tasksGroupedByStatus.splice(targetIndex, 0, removedTask)
 
-    tasksGroupedByStatus.forEach((task, index) => {
-      task.order = index + 1
-    })
+    const reorderedTasks = updateTaskOrder(tasksGroupedByStatus)
 
     const updatedTasks = tasks
       .filter((task) => task.taskStatus.id !== source.taskStatus.id)
-      .concat(tasksGroupedByStatus)
+      .concat(reorderedTasks)
 
     setTasks(updatedTasks)
-    updateOrder(tasksGroupedByStatus)
+    updateOrder(reorderedTasks)
   }
 
   const findTaskById = (id: number) => {
@@ -210,8 +213,8 @@ export const useBoard = () => {
         })),
       }),
       {
-        error: 'Erro ao atualizar ordem.',
-        success: 'Ordem atualizada com sucesso!',
+        error: 'Erro ao atualizar.',
+        success: 'Atualizado com sucesso!',
         pending: 'Atualizando...',
       }
     )
@@ -227,17 +230,26 @@ export const useBoard = () => {
     const status = statusId ? findTaskStatusById(+statusId) : null
 
     if (status && source) {
-      source.taskStatus = status
       const tasksGroupedByStatus = getTasksGroupedByStatus(status)
-      source.order = tasksGroupedByStatus.length + 1
-
-      tasksGroupedByStatus.forEach((task, index) => {
-        task.order = index + 1
+      tasksGroupedByStatus.push({
+        ...source,
+        taskStatus: status,
+        order: tasksGroupedByStatus.length + 1,
       })
 
-      setTasks([...tasks])
-      updateOrder(tasksGroupedByStatus)
+      const reorderedTasks = updateTaskOrder(tasksGroupedByStatus)
+
+      const updatedTasks = tasks
+        .filter(
+          (task) => task.taskStatus.id !== status.id && source.id !== task.id
+        )
+        .concat(reorderedTasks)
+
+      setTasks(updatedTasks)
+      updateOrder(reorderedTasks)
     }
+
+    setIsDraggable(false)
   }
 
   const onDragOverDropzone: DragEventHandler<HTMLDivElement> = (event) => {
